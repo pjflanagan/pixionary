@@ -1,13 +1,12 @@
 
 import React, { FC } from 'react';
 
-import { Color, Pixel } from 'types';
+import { Pixel, GRID_SIDE_ARRAY, findPixel } from 'classes';
 
 import { PixelElement } from './Pixel';
 
 import Style from './style.module.scss';
 
-const SIDE_LENGTH = 8;
 
 type DrawingElementProps = {
   pixels: Pixel[];
@@ -21,11 +20,11 @@ const DrawingElement: FC<DrawingElementProps> = ({
   return (
     <div className={Style.grid}>
       {
-        [...Array(SIDE_LENGTH)].map((_, row) => (
+        GRID_SIDE_ARRAY.map((_, row) => (
           <div className={Style.row}>
             {
-              [...Array(SIDE_LENGTH)].map((_, col) => {
-                const pixel = pixels.find(p => p.row === row && p.col === col);
+              GRID_SIDE_ARRAY.map((_, col) => {
+                const pixel = findPixel(pixels, row, col);
                 return (
                   <div className={Style.col}>
                     <PixelElement pixel={pixel} onClick={() => onClick(row, col)} />

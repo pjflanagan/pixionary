@@ -1,6 +1,6 @@
 {
-  "name": "NYT Crossword Plus",
-  "short_name": "NYTC Plus",
+  "name": "Pixionary",
+  "short_name": "Pixionary",
   "icons": [
     {
       "src": "../pwa/manifest-icon-192.maskable.png",

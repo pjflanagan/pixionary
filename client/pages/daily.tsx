@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-const PageHome: NextPage = () => {
+const PageDaily: NextPage = () => {
   return (
     <>
       <Head>
@@ -13,4 +13,4 @@ const PageHome: NextPage = () => {
   )
 }
 
-export default PageHome;
+export default PageDaily;

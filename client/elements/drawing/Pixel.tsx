@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 
-import { Pixel } from 'types';
+import { Pixel } from 'classes';
 
 import Style from './style.module.scss';
 

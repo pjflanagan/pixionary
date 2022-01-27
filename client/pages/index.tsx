@@ -1,18 +1,12 @@
-import type { NextPage } from 'next'
-// import Head from 'next/head'
+import { GetStaticProps } from "next";
 
-// TODO: redirect to /daily
+export default <></>;
 
-const PageHome: NextPage = () => {
-  return (
-    <>
-      {/* <Head>
-        <title>Pixionary: Daily</title>
-        <meta name="description" content="A daily pixel picture puzzle" />
-      </Head> */}
-      {/* TODO: component */}
-    </>
-  )
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    redirect: {
+      destination: '/daily',
+      permanent: false,
+    },
+  }
 }
-
-export default PageHome;
