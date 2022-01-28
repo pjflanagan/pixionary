@@ -1,5 +1,10 @@
 import { Pixel } from "./pixel"
 
+export type Prompt = {
+  name: string;
+  source: string;
+}
+
 export type Answer = {
   hash: string;
   length: number;

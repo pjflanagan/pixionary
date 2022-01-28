@@ -11,14 +11,14 @@ const GRAYSCALE = [
 
 const makePalletRow = (row: number): Color[] => {
   const luminosityValue = [
-    25,
+    75,
     50,
-    75
+    25
   ][row];
 
   const hueRowSection = [...Array(HUE_ROW_SECTION_LENGTH)].map((_, i) => {
-    const hue = 360 * i / HUE_ROW_SECTION_LENGTH
-    return `hsl(${hue}, 100, ${luminosityValue})`;
+    const hue = Math.floor(360 * i / HUE_ROW_SECTION_LENGTH);
+    return `hsl(${hue}, 100%, ${luminosityValue}%)`;
   });
   const greyScaleSection = GRAYSCALE[row];
   return [...greyScaleSection, ...hueRowSection];

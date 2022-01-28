@@ -1,6 +1,13 @@
-import { GetStaticProps } from "next";
+import { GetStaticProps, NextPage } from "next";
 
-export default <></>;
+const PageIndex: NextPage = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+export default PageIndex;
 
 export const getStaticProps: GetStaticProps = async () => {
   return {
