@@ -1,0 +1,22 @@
+.segmentHolder {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+
+  .inputHolder {
+    padding: 3px;
+    width: 2em;
+
+    input {
+      width: 100%;
+      font-size: 1.6em;
+      background: none;
+      text-align: center;
+      outline: none;
+      border: none;
+      border-bottom: 3px solid #0001;
+      text-transform: uppercase;
+    }
+  }
+
+}

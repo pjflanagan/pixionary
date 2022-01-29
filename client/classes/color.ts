@@ -1,12 +1,16 @@
 
+import convertToHex from 'hsl-to-hex';
+
 export type Color = string;
 
 const HUE_ROW_SECTION_LENGTH = 11;
 
+export const PALLET_INITIAL_COLOR = '#ff0000';
+
 const GRAYSCALE = [
-  ['#FFF', '#666'],
-  ['#CCC', '#333'],
-  ['#999', '#000'],
+  ['#ffffff', '#666666'],
+  ['#cccccc', '#333333'],
+  ['#999999', '#000000'],
 ]
 
 const makePalletRow = (row: number): Color[] => {
@@ -18,7 +22,7 @@ const makePalletRow = (row: number): Color[] => {
 
   const hueRowSection = [...Array(HUE_ROW_SECTION_LENGTH)].map((_, i) => {
     const hue = Math.floor(360 * i / HUE_ROW_SECTION_LENGTH);
-    return `hsl(${hue}, 100%, ${luminosityValue}%)`;
+    return convertToHex(hue, 100, luminosityValue)
   });
   const greyScaleSection = GRAYSCALE[row];
   return [...greyScaleSection, ...hueRowSection];

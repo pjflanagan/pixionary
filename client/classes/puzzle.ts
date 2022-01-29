@@ -1,33 +1,40 @@
 import { Pixel } from "./pixel"
 
-export type Prompt = {
+// Drawing
+export type DrawingTitle = {
   name: string;
   source: string;
 }
 
-export type Answer = {
-  hash: string;
+export type DrawingSubmission = {
+  title: DrawingTitle;
+  pixels: Pixel[];
+}
+
+// Puzzle
+
+export type PuzzleAnswer = {
+  namehash: string;
   length: number;
 }
 
-export type RevealedAnswer = Answer & {
-  value: string;
+export type RevealedPuzzleAnswer = PuzzleAnswer & {
+  title: DrawingTitle;
 }
 
 export type Puzzle = {
-  answer: Answer;
+  answer: PuzzleAnswer;
   pixels: Pixel[];
 }
 
-export type PuzzleSubmission = {
-  answer: RevealedAnswer;
-  pixels: Pixel[];
-}
 
-export const getPuzzleAnswer = async (answer: Answer): Promise<RevealedAnswer> => {
+export const getPuzzleAnswer = async (answer: PuzzleAnswer): Promise<RevealedPuzzleAnswer> => {
   // SELECT value FROM answer WHERE hash=answer.hash;
   return {
     ...answer,
-    value: 'THE ANSWER TO THE PUZZLE'
+    title: {
+      name: 'Louise',
+      source: `Bob's Burgers`
+    }
   }
 }

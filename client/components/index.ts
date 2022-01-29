@@ -1,2 +1,3 @@
-export * from './guess';
-export * from './canvas';
+export * from './puzzleHeader';
+export * from './pallet';
+export * from './drawing';
