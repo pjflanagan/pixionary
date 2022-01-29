@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react';
 
-import { colorPixel, Pixel, DrawingTitle } from 'classes'
+import { addPixel, Pixel, DrawingTitle } from 'classes'
 import { ContainerElement } from 'elements';
 import { PuzzleHeaderComponent, DrawingComponent, PalletComponent } from 'components';
 
@@ -20,7 +20,7 @@ const PageDaily: NextPage = () => {
   }
 
   const handlePixelClick = (newPixel: Pixel) => {
-    setPixels(colorPixel(pixels, newPixel));
+    setPixels(addPixel(pixels, newPixel));
   }
 
   return (

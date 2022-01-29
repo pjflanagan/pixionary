@@ -1,21 +1,25 @@
 
 import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'react';
+import { sum } from 'lodash';
 
 import Style from './style.module.scss';
 
 type SegmentedInputProps = {
   disabled?: boolean;
-  length: number;
+  wordLengths: number[];
   onSubmit: (value: string) => void;
 }
 
+// TODO: show correctness
+
 const SegmentedInput: FC<SegmentedInputProps> = ({
   disabled,
-  length,
+  wordLengths,
   onSubmit,
 }) => {
-  const [value, setValue] = useState<string[]>([...Array(length)]);
-  const segmentRefs = [...Array(length)].map(() => createRef<HTMLInputElement>());
+  const characterCount = sum(wordLengths);
+  const [value, setValue] = useState<string[]>([...Array(characterCount)]);
+  const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
 
   const focusSegment = (segmentIndex: number) => {
     if (segmentRefs[segmentIndex]) {
@@ -50,6 +54,7 @@ const SegmentedInput: FC<SegmentedInputProps> = ({
     <div className={Style.segmentHolder}>
       {
         [...Array(length)].map((_, i) => (
+          // TODO: insert gaps for spaces
           <div
             key={i}
             className={Style.inputHolder}

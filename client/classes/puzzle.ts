@@ -14,8 +14,9 @@ export type DrawingSubmission = {
 // Puzzle
 
 export type PuzzleAnswer = {
+  // TODO: maybe get rid of the name hash, we should show which letters they guessed right
   namehash: string;
-  length: number;
+  wordLengths: number[];
 }
 
 export type RevealedPuzzleAnswer = PuzzleAnswer & {

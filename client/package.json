@@ -5,12 +5,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "pwa-asset-gen": "pwa-asset-generator ./public/src/icon.png ./public/pwa --background \"#000\" --manifest ./public/manifest.json --index ./public/src/example_index.html --type png"
   },
   "dependencies": {
     "classnames": "^2.3.1",
     "hsl-to-hex": "^1.0.0",
+    "lodash": "^4.17.21",
     "next": "12.0.8",
+    "pwa-asset-generator": "^6.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-use": "^17.3.2",

@@ -14,29 +14,37 @@ type PuzzleHeaderComponentProps = {
 }
 
 const PuzzleHeaderComponent: FC<PuzzleHeaderComponentProps> = ({
+  mode,
   drawPrompt,
   puzzleAnswer
 }) => {
 
   const renderPuzzleTitle = () => (
     <div className={Style.title}>
-      <div className={Style.name}>{drawPrompt.name}</div>
-      <div className={Style.epithet}>from <i>{drawPrompt.source}</i></div>
+      <span className={Style.name}>{drawPrompt.name}</span>
+      <span className={Style.epithet}>from <i>{drawPrompt.source}</i></span>
     </div>
   );
 
   const renderSegmentedInput = () => (
     <SegmentedInput
-      length={puzzleAnswer.length}
+      wordLengths={puzzleAnswer.wordLengths}
       onSubmit={console.log}
     />
-  )
+  );
+
+  const prompt = {
+    REVEAL: 'It was',
+    DRAW: `Let's draw:`,
+    GUESS: 'Who is this?'
+  }[mode];
 
   return (
     <div className={Style.puzzleHeader}>
-      <div className={Style.prompt}></div>
+      <div className={Style.prompt}>{prompt}</div>
       <div className={Style.puzzleActionOrInfo}>
-        {renderPuzzleTitle()}
+        {(mode === 'REVEAL' || mode === 'DRAW') && renderPuzzleTitle()}
+        {mode === 'GUESS' && renderSegmentedInput()}
       </div>
     </div>
   );
