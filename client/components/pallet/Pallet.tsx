@@ -1,5 +1,6 @@
 
 import React, { FC, useEffect } from 'react';
+import { useEffectOnce } from 'react-use';
 
 import { PALLET, PALLET_INITIAL_COLOR, Color } from 'classes';
 
@@ -15,10 +16,6 @@ const PalletComponent: FC<PalletComponentProps> = ({
   setColor,
   selectedColor
 }) => {
-
-  useEffect(() => {
-    setColor(PALLET_INITIAL_COLOR);
-  }, []);
 
   return (
     <div className={Style.palletContainer}>

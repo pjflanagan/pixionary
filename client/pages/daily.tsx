@@ -2,12 +2,12 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react';
 
-import { addPixel, Pixel, DrawingTitle } from 'classes'
-import { ContainerElement } from 'elements';
+import { addPixel, Pixel, DrawingTitle, PALLET_INITIAL_COLOR } from 'classes'
+import { ContainerElement, HeaderElement } from 'elements';
 import { PuzzleHeaderComponent, DrawingComponent, PalletComponent } from 'components';
 
 const PageDaily: NextPage = () => {
-  const [color, setColor] = useState('#FFF');
+  const [color, setColor] = useState(PALLET_INITIAL_COLOR);
   const [pixels, setPixels] = useState<Pixel[]>([]);
 
   const handleSubmitGuess = (guess: string) => {
@@ -15,7 +15,7 @@ const PageDaily: NextPage = () => {
   }
 
   const prompt: DrawingTitle = {
-    name: 'Jerry',
+    name: 'Jerry Smith',
     source: 'Rick and Morty'
   }
 
@@ -30,9 +30,11 @@ const PageDaily: NextPage = () => {
         <meta name="description" content="A daily pixel picture puzzle" />
       </Head>
       <ContainerElement>
+        <HeaderElement />
         <PuzzleHeaderComponent
-          mode="DRAW"
+          mode="GUESS"
           drawPrompt={prompt}
+          puzzleAnswer={prompt}
         />
         <DrawingComponent
           color={color}

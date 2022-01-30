@@ -12,6 +12,7 @@ type DrawingComponentProps = {
   pixels: Pixel[];
   colorPixel: (row: number, col: number) => void;
   drawDisabled?: boolean;
+  playMode?: boolean;
 }
 
 const DrawingComponent: FC<DrawingComponentProps> = ({

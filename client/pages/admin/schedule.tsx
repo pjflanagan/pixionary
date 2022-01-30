@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
-const PageAdminIndex: NextPage = () => {
+const PageAdminSchedule: NextPage = () => {
 
   return (
     <>
@@ -9,9 +9,9 @@ const PageAdminIndex: NextPage = () => {
         <title>Pixionary: Admin</title>
         <meta name="description" content="A daily pixel picture puzzle" />
       </Head>
-      <div>Links to all the admin pages</div>
+      <div>Make the schedule</div>
     </>
   )
 }
 
-export default PageAdminIndex;
+export default PageAdminSchedule;

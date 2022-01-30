@@ -42,13 +42,6 @@ function App({ Component, pageProps }) {
         <meta name="twitter:creator" content={HANDLE} />
         <meta name="twitter:image" content={IMG} />
 
-        {/* Google Fonts */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin='true' />
-        <link href="https://fonts.googleapis.com/css2?family=Dongle:wght@300;700&display=swap" rel="stylesheet" />
-
-        {/* <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet" /> */}
-
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
           async

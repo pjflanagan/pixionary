@@ -3,7 +3,7 @@
   width: 100%;
   justify-content: center;
 
-  .inputHolder {
+  .segment {
     padding: 3px;
     width: 2em;
 
@@ -14,8 +14,12 @@
       text-align: center;
       outline: none;
       border: none;
-      border-bottom: 3px solid #0001;
+      border-bottom: 3px solid #0002;
       text-transform: uppercase;
+
+      &:focus {
+        border-bottom: 3px solid #0004;
+      }
     }
   }
 

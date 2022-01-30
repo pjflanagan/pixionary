@@ -1,8 +1,9 @@
 
 import React, { FC } from 'react';
 
-import { DrawingTitle, PuzzleAnswer } from 'classes';
-import { SegmentedInput } from 'elements';
+import { DrawingTitle } from 'classes';
+
+import { SegmentedInput } from './segmentedInput';
 
 import Style from './style.module.scss';
 
@@ -10,7 +11,7 @@ import Style from './style.module.scss';
 type PuzzleHeaderComponentProps = {
   mode: 'REVEAL' | 'DRAW' | 'GUESS';
   drawPrompt?: DrawingTitle;
-  puzzleAnswer?: PuzzleAnswer;
+  puzzleAnswer?: DrawingTitle;
 }
 
 const PuzzleHeaderComponent: FC<PuzzleHeaderComponentProps> = ({
@@ -28,7 +29,7 @@ const PuzzleHeaderComponent: FC<PuzzleHeaderComponentProps> = ({
 
   const renderSegmentedInput = () => (
     <SegmentedInput
-      wordLengths={puzzleAnswer.wordLengths}
+      correctWord={puzzleAnswer?.name || ''}
       onSubmit={console.log}
     />
   );
