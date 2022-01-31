@@ -1,7 +1,6 @@
 
-import React, { FC, useState } from 'react';
-import { useEffectOnce, useInterval } from 'react-use';
-import { reverse } from 'lodash';
+import React, { FC, useState, useEffect } from 'react';
+import { useInterval } from 'react-use';
 
 import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
 
@@ -33,14 +32,14 @@ const DrawingComponent: FC<DrawingComponentProps> = ({
   const [pixelIndex, setPixelIndex] = useState(0);
   const [intervalSpeed, setIntervalSpeed] = useState<number | null>(null);
 
-  useEffectOnce(() => {
+  useEffect(() => {
     if (mode === 'GUESS') {
       setIntervalSpeed(80);
       return;
     }
     setDisplayPixels(pixels);
     return;
-  });
+  }, [mode, pixels]);
 
   useInterval(() => {
     if (pixelIndex === pixels.length) {
@@ -67,7 +66,7 @@ const DrawingComponent: FC<DrawingComponentProps> = ({
 
   return (
     <>
-      <TitleComponent title={title} visible={mode !== 'GUESS'} />
+      <TitleComponent title={title} visible={mode === 'DRAW' || mode === 'REVEAL'} />
       <div className={Style.gridContainer}>
         <div className={Style.gridHolder}>
           <div

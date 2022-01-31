@@ -1,2 +1,2 @@
 
-export type GameMode = "GUESS" | "REVEAL" | "DRAW";
+export type GameMode = "START" | "GUESS" | "REVEAL" | "DRAW";

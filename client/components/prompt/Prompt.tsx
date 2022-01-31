@@ -1,26 +1,25 @@
 
 import React, { FC } from 'react';
 
-import { DrawingTitle, GameMode } from 'classes';
-
 import Style from './style.module.scss';
 
-type PromptComponentProps = {
-  mode: GameMode;
+export type PromptComponentProps = {
+  color?: string;
+  text: string;
 }
 
 const PromptComponent: FC<PromptComponentProps> = ({
-  mode,
+  color,
+  text,
 }) => {
 
-  const prompt = {
-    REVEAL: 'It was',
-    DRAW: `Let's draw:`,
-    GUESS: 'Who is this?'
-  }[mode];
-
   return (
-    <div className={Style.prompt}>{prompt}</div>
+    <div
+      className={Style.prompt}
+      style={{
+        color
+      }}
+    >{text}</div>
   );
 }
 

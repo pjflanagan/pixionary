@@ -57,6 +57,10 @@ const GuessInput: FC<GuessInputProps> = ({
   }
 
   const handleSubmit = () => {
+    const correctWordNoSpaces = correctWord.replaceAll(' ', '');
+    if (correctWordNoSpaces.length !== value.length) {
+      return false;
+    }
     if (validate()) {
       onCorrect();
     }

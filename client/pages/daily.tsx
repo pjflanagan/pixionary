@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { useState } from 'react';
 
 import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle } from 'classes'
-import { ContainerElement } from 'elements';
+import { ButtonElement, ContainerElement } from 'elements';
 import { DrawingComponent, PalletComponent, HeaderComponent, GuessInput, PromptComponent } from 'components';
 
 const PROMPT: DrawingTitle = {
@@ -24,7 +24,11 @@ const PageDaily: NextPage = () => {
   // TODO: a start button somewhere, the prompt should "Are you ready?"
 
   // Game
-  const [gameMode, setGameMode] = useState<GameMode>('GUESS');
+  const [gameMode, setGameMode] = useState<GameMode>('START');
+  const [prompt, setPrompt] = useState({
+    text: 'Are you ready?',
+    color: undefined
+  });
 
   // Guess
   const [puzzle, setPuzzle] = useState(PUZZLE);
@@ -33,10 +37,32 @@ const PageDaily: NextPage = () => {
   const [drawPrompt, setDrawPrompt] = useState(PROMPT);
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
+  const cycleGameMode = (nextGameMode: GameMode) => {
+    switch (nextGameMode) {
+      case 'GUESS':
+        setPrompt({
+          text: 'Who is this?',
+          color: undefined
+        });
+        break;
+      case 'REVEAL':
+        setPrompt({
+          text: 'It was:',
+          color: undefined
+        });
+        break;
+      case 'DRAW':
+        setPrompt({
+          text: `Let's draw:`,
+          color: undefined
+        });
+        break;
+    }
+    setGameMode(nextGameMode);
+  }
+
   const handleSubmitGuess = () => {
-    setGameMode('REVEAL');
-    // TODO: after the reveal, display buttons at the bottom of the screen
-    // to either share or continue
+    cycleGameMode('REVEAL');
   }
 
   const drawingTitle = (gameMode === 'DRAW') ? drawPrompt : puzzle.answer;
@@ -50,27 +76,32 @@ const PageDaily: NextPage = () => {
       <ContainerElement>
         <HeaderComponent />
         <PromptComponent
-          // TODO: prompt should just take text as children
-          // That way we can make it say, Correct, or Incorrect
-          mode={gameMode}
+          color={prompt.color}
+          text={prompt.text}
         />
         <DrawingComponent
           mode={gameMode}
           color={color}
-          pixels={gameMode === 'DRAW' ? [] : puzzle.pixels}
+          pixels={gameMode === 'GUESS' || gameMode === 'REVEAL' ? puzzle.pixels : []}
           title={drawingTitle}
         // TODO: some function to get the pixels out of there?
         />
         {
-          gameMode === 'DRAW' && <PalletComponent
-            setColor={setColor}
-            selectedColor={color}
-          />
+          gameMode === 'START' && <ButtonElement label="Start" onClick={() => cycleGameMode('GUESS')} />
         }
         {
           gameMode === 'GUESS' && <GuessInput
             correctWord={puzzle.answer.name || ''}
             onCorrect={handleSubmitGuess}
+          />
+        }
+        {
+          gameMode === 'REVEAL' && <ButtonElement label="Continue" onClick={() => cycleGameMode('DRAW')} />
+        }
+        {
+          gameMode === 'DRAW' && <PalletComponent
+            setColor={setColor}
+            selectedColor={color}
           />
         }
 
