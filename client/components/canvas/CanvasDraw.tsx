@@ -1,72 +1,41 @@
 
-import React, { FC, useState, useEffect } from 'react';
-import { useInterval } from 'react-use';
+import React, { FC, useState } from 'react';
 
 import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
 
 import { PixelElement } from './Pixel';
-
-import Style from './style.module.scss';
 import { TitleComponent } from './Title';
 
-type DrawingComponentProps = {
+import Style from './style.module.scss';
+
+type CanvasDrawComponentProps = {
   color: Color;
   pixels: Pixel[];
-  mode: GameMode;
+  setPixels: (newPixels: Pixel[]) => void;
   title: DrawingTitle;
 }
 
-const DrawingComponent: FC<DrawingComponentProps> = ({
+const CanvasDrawComponent: FC<CanvasDrawComponentProps> = ({
   color,
   pixels,
-  mode,
+  setPixels,
   title
 }) => {
-
-  const [displayPixels, setDisplayPixels] = useState<Pixel[]>([]);
 
   // Draw
   const [isBrushDown, setIsBrushDown] = useState(false);
 
-  // Guess
-  const [pixelIndex, setPixelIndex] = useState(0);
-  const [intervalSpeed, setIntervalSpeed] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (mode === 'GUESS') {
-      setIntervalSpeed(80);
-      return;
-    }
-    setDisplayPixels(pixels);
-    return;
-  }, [mode, pixels]);
-
-  useInterval(() => {
-    if (pixelIndex === pixels.length) {
-      setIntervalSpeed(null);
-      return;
-    }
-    setDisplayPixels(addPixel(displayPixels, pixels[pixels.length - pixelIndex - 1]));
-    setPixelIndex(pixelIndex + 1);
-  }, intervalSpeed);
-
   const startPainting = () => {
-    if (mode !== 'DRAW') {
-      return;
-    }
     setIsBrushDown(true);
   }
 
   const handlePixelClick = (row: number, col: number) => {
-    if (mode !== 'DRAW') {
-      return;
-    }
-    setDisplayPixels(addPixel(displayPixels, [row, col, color]));
+    setPixels(addPixel(pixels, [row, col, color]));
   }
 
   return (
     <>
-      <TitleComponent title={title} visible={mode === 'DRAW' || mode === 'REVEAL'} />
+      <TitleComponent title={title} visible={true} />
       <div className={Style.gridContainer}>
         <div className={Style.gridHolder}>
           <div
@@ -85,11 +54,11 @@ const DrawingComponent: FC<DrawingComponentProps> = ({
                 <div className={Style.row} key={row}>
                   {
                     GRID_SIDE_ARRAY.map((_, col) => {
-                      const pixel = findPixel(displayPixels, row, col);
+                      const pixel = findPixel(pixels, row, col);
                       return (
                         <div className={Style.col} key={col}>
                           <PixelElement
-                            drawEnabled={mode === 'DRAW'}
+                            drawEnabled
                             color={color}
                             pixel={pixel}
                             colorPixel={() => handlePixelClick(row, col)}
@@ -111,4 +80,4 @@ const DrawingComponent: FC<DrawingComponentProps> = ({
 }
 
 
-export { DrawingComponent };
+export { CanvasDrawComponent };

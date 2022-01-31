@@ -6,10 +6,10 @@ import { Color, Pixel, getColor } from 'classes';
 import Style from './style.module.scss';
 
 type PixelElementProps = {
-  color: Color;
   pixel?: Pixel;
-  colorPixel: () => void;
-  isBrushDown: boolean;
+  color?: Color;
+  colorPixel?: () => void;
+  isBrushDown?: boolean;
   drawEnabled: boolean;
 }
 

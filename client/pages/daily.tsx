@@ -2,9 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react';
 
-import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle } from 'classes'
+import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle, Pixel } from 'classes'
 import { ButtonElement, ContainerElement } from 'elements';
-import { DrawingComponent, PalletComponent, HeaderComponent, GuessInput, PromptComponent } from 'components';
+import { PalletComponent, HeaderComponent, GuessInput, PromptComponent, CanvasDrawComponent, CanvasWatchComponent } from 'components';
 
 const PROMPT: DrawingTitle = {
   name: 'Jerry Smith',
@@ -35,6 +35,7 @@ const PageDaily: NextPage = () => {
 
   // Draw
   const [drawPrompt, setDrawPrompt] = useState(PROMPT);
+  const [drawPixels, setDrawPixels] = useState<Pixel[]>([]);
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
   const cycleGameMode = (nextGameMode: GameMode) => {
@@ -79,13 +80,22 @@ const PageDaily: NextPage = () => {
           color={prompt.color}
           text={prompt.text}
         />
-        <DrawingComponent
-          mode={gameMode}
-          color={color}
-          pixels={gameMode === 'GUESS' || gameMode === 'REVEAL' ? puzzle.pixels : []}
-          title={drawingTitle}
-        // TODO: some function to get the pixels out of there?
-        />
+        {
+          gameMode === 'DRAW' && <CanvasDrawComponent
+            color={color}
+            pixels={drawPixels}
+            setPixels={setDrawPixels}
+            title={drawingTitle}
+          />
+        }
+        {
+          gameMode !== 'DRAW' && <CanvasWatchComponent
+            pixels={puzzle.pixels}
+            isPlaying={gameMode === 'GUESS' || gameMode === 'REVEAL'}
+            titleVisible={gameMode === 'REVEAL'}
+            title={drawingTitle}
+          />
+        }
         {
           gameMode === 'START' && <ButtonElement label="Start" onClick={() => cycleGameMode('GUESS')} />
         }
