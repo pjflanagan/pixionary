@@ -1,7 +1,9 @@
 
 import React, { FC, useState } from 'react';
+import { useEffectOnce, useInterval } from 'react-use';
+import { reverse } from 'lodash';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, Color } from 'classes';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel } from 'classes';
 
 import { PixelElement } from './Pixel';
 
@@ -10,32 +12,54 @@ import Style from './style.module.scss';
 type DrawingComponentProps = {
   color: Color;
   pixels: Pixel[];
-  colorPixel: (row: number, col: number) => void;
-  drawDisabled?: boolean;
-  playMode?: boolean;
+  mode: GameMode;
 }
 
 const DrawingComponent: FC<DrawingComponentProps> = ({
   color,
   pixels,
-  colorPixel: colorPixelProp,
-  drawDisabled
+  mode
 }) => {
 
+  const [displayPixels, setDisplayPixels] = useState<Pixel[]>([]);
+
+  // Draw
   const [isBrushDown, setIsBrushDown] = useState(false);
 
+  // Guess
+  const [pixelIndex, setPixelIndex] = useState(0);
+  const [intervalSpeed, setIntervalSpeed] = useState<number | null>(null);
+
+  useEffectOnce(() => {
+    if (mode === 'GUESS') {
+      setIntervalSpeed(80);
+      return;
+    }
+    setDisplayPixels(pixels);
+    return;
+  });
+
+  useInterval(() => {
+    if (pixelIndex === pixels.length) {
+      setIntervalSpeed(null);
+      return;
+    }
+    setDisplayPixels(addPixel(displayPixels, pixels[pixels.length - pixelIndex - 1]));
+    setPixelIndex(pixelIndex + 1);
+  }, intervalSpeed);
+
   const startPainting = () => {
-    if (drawDisabled) {
+    if (mode !== 'DRAW') {
       return;
     }
     setIsBrushDown(true);
   }
 
-  const colorPixel = (row: number, col: number) => {
-    if (drawDisabled) {
+  const handlePixelClick = (row: number, col: number) => {
+    if (mode !== 'DRAW') {
       return;
     }
-    colorPixelProp(row, col);
+    setDisplayPixels(addPixel(displayPixels, [row, col, color]));
   }
 
   return (
@@ -57,13 +81,14 @@ const DrawingComponent: FC<DrawingComponentProps> = ({
               <div className={Style.row} key={row}>
                 {
                   GRID_SIDE_ARRAY.map((_, col) => {
-                    const pixel = findPixel(pixels, row, col);
+                    const pixel = findPixel(displayPixels, row, col);
                     return (
                       <div className={Style.col} key={col}>
                         <PixelElement
+                          drawEnabled={mode === 'DRAW'}
                           color={color}
                           pixel={pixel}
-                          colorPixel={() => colorPixel(row, col)}
+                          colorPixel={() => handlePixelClick(row, col)}
                           isBrushDown={isBrushDown}
                         />
                       </div>);

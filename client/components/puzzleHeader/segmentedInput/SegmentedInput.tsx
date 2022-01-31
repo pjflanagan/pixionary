@@ -1,8 +1,8 @@
 
 import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'react';
-import { sum } from 'lodash';
 
 import Style from './style.module.scss';
+import { useEffectOnce } from 'react-use';
 
 type SegmentedInputProps = {
   disabled?: boolean;
@@ -11,6 +11,7 @@ type SegmentedInputProps = {
 }
 
 // TODO: show correctness on submit
+// Show a guess count
 
 const SegmentedInput: FC<SegmentedInputProps> = ({
   disabled,
@@ -20,6 +21,10 @@ const SegmentedInput: FC<SegmentedInputProps> = ({
   const characterCount = correctWord.replace(' ', '').length;
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
+
+  useEffectOnce(() => {
+    segmentRefs[0].current.focus();
+  })
 
   const focusSegment = (segmentIndex: number) => {
     if (segmentRefs[segmentIndex]) {

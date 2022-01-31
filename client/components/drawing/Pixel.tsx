@@ -10,6 +10,7 @@ type PixelElementProps = {
   pixel?: Pixel;
   colorPixel: () => void;
   isBrushDown: boolean;
+  drawEnabled: boolean;
 }
 
 const PixelElement: FC<PixelElementProps> = ({
@@ -17,11 +18,15 @@ const PixelElement: FC<PixelElementProps> = ({
   pixel,
   colorPixel,
   isBrushDown,
+  drawEnabled,
 }) => {
 
   const [isHover, setIsHover] = useState(false);
 
   const handleMouseEnter = () => {
+    if (!drawEnabled) {
+      return;
+    }
     setIsHover(true);
     if (isBrushDown) {
       colorPixel();

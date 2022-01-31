@@ -1,0 +1,26 @@
+.popupOverlay {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: #0008;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  top: 0;
+  left: 0;
+
+  &.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .popupModal {
+    width: 80%;
+    min-height: 12em;
+    max-width: calc(480px * 0.8);
+    height: fit-content;
+    background: #fff;
+    margin: 2em auto;
+  }
+}
