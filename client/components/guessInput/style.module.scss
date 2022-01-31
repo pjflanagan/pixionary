@@ -1,7 +1,8 @@
-.segmentHolder {
+.inputHolder {
   display: flex;
   width: 100%;
   justify-content: center;
+  margin: 6px;
 
   .segment {
     padding: 3px;
@@ -14,11 +15,16 @@
       text-align: center;
       outline: none;
       border: none;
-      border-bottom: 3px solid #0002;
+      border-bottom: 3px solid #0006;
       text-transform: uppercase;
 
       &:focus {
-        border-bottom: 3px solid #0004;
+        border-bottom: 3px solid #0008;
+      }
+
+      &.invalid {
+        border-bottom: 3px solid #f00;
+        color: #f00;
       }
     }
   }

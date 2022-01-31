@@ -5,16 +5,17 @@ import Image from 'next/image'
 import Style from './style.module.scss';
 
 import Logo from './logo.png';
-import { PopupElement } from 'elements';
+import { ButtonElementProps, PopupElement } from 'elements';
 
 const HeaderComponent: FC = () => {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-  const popupActions = [
+  const popupActions: ButtonElementProps[] = [
     {
-      name: 'Close',
-      effect: () => setIsPopupOpen(false)
+      label: 'Share',
+      onClick: () => console.log('share'),
+      type: 'primary'
     }
   ];
 
@@ -24,12 +25,14 @@ const HeaderComponent: FC = () => {
 
   return (
     <>
-      <PopupElement isOpen={isPopupOpen} title="Info" actions={popupActions} >
+      <PopupElement isOpen={isPopupOpen} title="Info" actions={popupActions} onClose={() => setIsPopupOpen(false)}>
         <p>Pixionary is a pop culture drawing game with pixels.</p>
+        <p>First, guess the character being drawn. The faster you guess, the better your score!</p>
+        <p>Next, draw a character that might be used as a puzzle in the future.</p>
       </PopupElement>
       <div className={Style.header}>
         <Image alt="Pixionary" src={Logo} />
-        <span onClick={openPopup}>Info</span>
+        <span className={Style.infoLink} onClick={openPopup}>Info</span>
       </div>
     </>
   );

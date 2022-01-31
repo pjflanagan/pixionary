@@ -4,27 +4,63 @@ import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'reac
 import Style from './style.module.scss';
 import { useEffectOnce } from 'react-use';
 
-type SegmentedInputProps = {
+type GuessInputProps = {
   disabled?: boolean;
   correctWord: string;
-  onSubmit: (value: string) => void;
+  onCorrect: () => void;
+  // TODO: onFail
 }
 
-// TODO: show correctness on submit
-// Show a guess count
+// TODO: Show a guess count
+// TODO: show a timer
 
-const SegmentedInput: FC<SegmentedInputProps> = ({
+/*
+
+Remaining Guesses: 3         1:24
+
+           _ _ _ _ _ _
+
+*/
+
+const GuessInput: FC<GuessInputProps> = ({
   disabled,
   correctWord,
-  onSubmit,
+  onCorrect,
+  // onFail
 }) => {
   const characterCount = correctWord.replace(' ', '').length;
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
 
+  const initInvalidSegments = [...Array(characterCount)].fill(false);
+  const [invalidSegments, setInvalidSegments] = useState(initInvalidSegments);
+
+  const setInvalidSegment = (index: number, isInvalid: boolean) => {
+    invalidSegments[index] = isInvalid;
+    setInvalidSegments([...invalidSegments]);
+  }
+
   useEffectOnce(() => {
     segmentRefs[0].current.focus();
-  })
+  });
+
+  const validate = (): boolean => {
+    const correctWordNoSpaces = correctWord.replaceAll(' ', '');
+    let isValid = true;
+    value.forEach((char, i) => {
+      if (char.toUpperCase() !== correctWordNoSpaces[i].toUpperCase()) {
+        setInvalidSegment(i, true);
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+  const handleSubmit = () => {
+    if (validate()) {
+      onCorrect();
+    }
+  }
 
   const focusSegment = (segmentIndex: number) => {
     if (segmentRefs[segmentIndex]) {
@@ -44,12 +80,13 @@ const SegmentedInput: FC<SegmentedInputProps> = ({
     const newValue = [...value];
     newValue[index] = segmentValue;
     setValue(newValue);
+    setInvalidSegment(index, false);
   }
 
   const onKeyDown = (event: any, index: number) => {
     const { key, target: { value: segmentValue } } = event;
     if (key === 'Enter') {
-      onSubmit(value.join(''));
+      handleSubmit();
     } else if (key === 'Backspace' && segmentValue.length === 0) {
       focusSegment(index - 1);
     }
@@ -81,6 +118,7 @@ const SegmentedInput: FC<SegmentedInputProps> = ({
           maxLength={1}
           ref={segmentRefs[i]}
           value={value && value[i] ? value[i] : ''}
+          className={invalidSegments[i] ? Style.invalid : ''}
           tabIndex={0}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e, i)}
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onKeyDown(e, i)}
@@ -106,12 +144,14 @@ const SegmentedInput: FC<SegmentedInputProps> = ({
   }
 
   return (
-    <div className={Style.segmentHolder}>
+    // Info row
+    <div className={Style.inputHolder}>
       {renderSegments()}
     </div>
+    // Submit button
   );
 
 }
 
 
-export { SegmentedInput };
+export { GuessInput };

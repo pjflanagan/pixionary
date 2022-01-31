@@ -5,4 +5,17 @@
   img {
     height: 24px !important;
   }
+
+  .infoLink {
+    float: right;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    padding: 0 0.6em;
+    color: #000c;
+    cursor: pointer;
+
+    &:hover {
+      color: #000;
+    }
+  }
 }

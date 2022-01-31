@@ -1,0 +1,22 @@
+.button {
+  margin: 0 0.2em;
+  padding: 0.2em 0.8em;
+  background: #0001;
+  font-size: 1.4em;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #0002;
+  }
+
+  &.primary {
+    background: #2f4be7;
+    color: #fff;
+
+    &:hover {
+      background: #1e34b3;
+      color: #fff;
+    }
+  }
+}

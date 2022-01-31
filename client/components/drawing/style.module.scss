@@ -1,14 +1,34 @@
+.title {
+  text-align: center;
+  background: #000;
+  color: #fff;
+  padding-top: 6px;
+  height: 1.8em;
+
+  .name {
+    font-size: 1.8em;
+    text-transform: uppercase;
+    font-weight: bold;
+    line-height: 1em;
+  }
+
+  .epithet {
+    font-size: 1em;
+  }
+}
+
 .gridContainer {
   width: 100%;
   padding-top: 100%;
   position: relative;
+  background: #000;
 
   .gridHolder {
     margin-top: -100%;
+    margin-left: 12px;
     position: absolute;
-    width: 100%;
-    height: 100%;
-    padding: 6px;
+    width: calc(100% - 24px);
+    height: calc(100% - 24px);
 
     .grid {
       width: 100%;

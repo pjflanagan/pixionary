@@ -2,9 +2,9 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react';
 
-import { Pixel, DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle } from 'classes'
+import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle } from 'classes'
 import { ContainerElement } from 'elements';
-import { PuzzleHeaderComponent, DrawingComponent, PalletComponent, HeaderComponent } from 'components';
+import { DrawingComponent, PalletComponent, HeaderComponent, GuessInput, PromptComponent } from 'components';
 
 const PROMPT: DrawingTitle = {
   name: 'Jerry Smith',
@@ -21,6 +21,8 @@ const PUZZLE: Puzzle = {
 
 const PageDaily: NextPage = () => {
 
+  // TODO: a start button somewhere, the prompt should "Are you ready?"
+
   // Game
   const [gameMode, setGameMode] = useState<GameMode>('GUESS');
 
@@ -31,9 +33,13 @@ const PageDaily: NextPage = () => {
   const [drawPrompt, setDrawPrompt] = useState(PROMPT);
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
-  const handleSubmitGuess = (guess: string) => {
-    console.log(guess);
+  const handleSubmitGuess = () => {
+    setGameMode('REVEAL');
+    // TODO: after the reveal, display buttons at the bottom of the screen
+    // to either share or continue
   }
+
+  const drawingTitle = (gameMode === 'DRAW') ? drawPrompt : puzzle.answer;
 
   return (
     <>
@@ -43,21 +49,28 @@ const PageDaily: NextPage = () => {
       </Head>
       <ContainerElement>
         <HeaderComponent />
-        <PuzzleHeaderComponent
+        <PromptComponent
+          // TODO: prompt should just take text as children
+          // That way we can make it say, Correct, or Incorrect
           mode={gameMode}
-          drawPrompt={drawPrompt}
-          puzzleAnswer={puzzle.answer}
         />
         <DrawingComponent
           mode={gameMode}
           color={color}
           pixels={gameMode === 'DRAW' ? [] : puzzle.pixels}
+          title={drawingTitle}
         // TODO: some function to get the pixels out of there?
         />
         {
           gameMode === 'DRAW' && <PalletComponent
             setColor={setColor}
             selectedColor={color}
+          />
+        }
+        {
+          gameMode === 'GUESS' && <GuessInput
+            correctWord={puzzle.answer.name || ''}
+            onCorrect={handleSubmitGuess}
           />
         }
 
