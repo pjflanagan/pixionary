@@ -1,22 +1,38 @@
-.button {
-  margin: 0 0.2em;
-  padding: 0.2em 0.8em;
-  background: #0001;
-  font-size: 1.4em;
-  cursor: pointer;
-  transition: background 0.2s;
+.buttonRow {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.4em 0;
 
-  &:hover {
-    background: #0002;
-  }
-
-  &.primary {
-    background: #2f4be7;
-    color: #fff;
+  .button {
+    margin: 0 0.2em;
+    padding: 0.2em 0.8em;
+    background: #0001;
+    font-size: 1.4em;
+    cursor: pointer;
+    transition: background 0.2s;
 
     &:hover {
-      background: #1e34b3;
+      background: #0002;
+    }
+
+    &.primary {
+      background: #2f4be7;
       color: #fff;
+
+      &:hover {
+        background: #1e34b3;
+        color: #fff;
+      }
+    }
+
+    &.secondary {
+      background: #e7a72f;
+      color: #000;
+
+      &:hover {
+        background: #e7cb2f;
+        color: #000;
+      }
     }
   }
 }

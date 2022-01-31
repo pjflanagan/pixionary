@@ -16,15 +16,13 @@ const TitleComponent: FC<TitleComponentProps> = ({
 }) => {
 
   return (
-    <div className={Style.puzzleActionOrInfo}>
-      <div className={Style.title}>
-        {
-          visible && <>
-            <span className={Style.name}>{title.name}</span>
-            <span className={Style.epithet}> from <i>{title.source}</i></span>
-          </>
-        }
-      </div>
+    <div className={Style.title}>
+      {
+        visible && <>
+          <span className={Style.name}>{title.name}</span>
+          <span className={Style.epithet}> from <i>{title.source}</i></span>
+        </>
+      }
     </div>
   );
 }

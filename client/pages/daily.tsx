@@ -1,9 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
 
 import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle, Pixel } from 'classes'
-import { ButtonElement, ContainerElement } from 'elements';
+import { ButtonElement, ButtonRowElement, ContainerElement } from 'elements';
 import { PalletComponent, HeaderComponent, GuessInput, PromptComponent, CanvasDrawComponent, CanvasWatchComponent } from 'components';
 
 const PROMPT: DrawingTitle = {
@@ -29,6 +30,7 @@ const PageDaily: NextPage = () => {
     text: 'Are you ready?',
     color: undefined
   });
+  const [_state, copyToClipboard] = useCopyToClipboard();
 
   // Guess
   const [puzzle, setPuzzle] = useState(PUZZLE);
@@ -80,6 +82,7 @@ const PageDaily: NextPage = () => {
           color={prompt.color}
           text={prompt.text}
         />
+        {/* TODO: maybe all of these should be wrapped in a DailyGame component, and broken down into functions renderGuess() */}
         {
           gameMode === 'DRAW' && <CanvasDrawComponent
             color={color}
@@ -97,7 +100,9 @@ const PageDaily: NextPage = () => {
           />
         }
         {
-          gameMode === 'START' && <ButtonElement label="Start" onClick={() => cycleGameMode('GUESS')} />
+          gameMode === 'START' && <ButtonRowElement>
+            <ButtonElement label="Start" onClick={() => cycleGameMode('GUESS')} type="primary" />
+          </ButtonRowElement>
         }
         {
           gameMode === 'GUESS' && <GuessInput
@@ -106,13 +111,23 @@ const PageDaily: NextPage = () => {
           />
         }
         {
-          gameMode === 'REVEAL' && <ButtonElement label="Continue" onClick={() => cycleGameMode('DRAW')} />
+          gameMode === 'REVEAL' && <ButtonRowElement>
+            <ButtonElement label="Share" onClick={() => copyToClipboard('Pixionary #12 - 1:28')} type="secondary" />
+            <ButtonElement label="Continue" onClick={() => cycleGameMode('DRAW')} type="primary" />
+          </ButtonRowElement>
         }
         {
-          gameMode === 'DRAW' && <PalletComponent
-            setColor={setColor}
-            selectedColor={color}
-          />
+          gameMode === 'DRAW' && <>
+            <PalletComponent
+              setColor={setColor}
+              selectedColor={color}
+            />
+            <ButtonRowElement>
+              <ButtonElement label="Restart" onClick={() => setDrawPixels([])} />
+              {/* TODO: open a popup that asks to confirm, with a share dialogue */}
+              <ButtonElement label="Submit" onClick={() => console.log('submit')} type="primary" />
+            </ButtonRowElement>
+          </>
         }
 
       </ContainerElement>

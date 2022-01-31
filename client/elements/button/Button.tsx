@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import classNames from 'classnames';
 
 import Style from './style.module.scss';
@@ -6,7 +6,7 @@ import Style from './style.module.scss';
 export type ButtonElementProps = {
   onClick: () => void;
   label: string;
-  type?: 'primary'
+  type?: 'primary' | 'secondary'
 }
 
 const ButtonElement: FC<ButtonElementProps> = ({

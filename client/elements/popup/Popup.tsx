@@ -2,7 +2,7 @@ import React, { FC, useRef } from 'react';
 import classNames from 'classnames';
 import { useClickAway } from 'react-use';
 
-import { ButtonElement, ButtonElementProps } from 'elements'
+import { ButtonElement, ButtonElementProps, ButtonRowElement } from 'elements'
 
 import Style from './style.module.scss';
 
@@ -34,14 +34,14 @@ const PopupElement: FC<PopupElementProps> = ({
       <div className={Style.popupModal} ref={ref}>
         <div className={Style.title}>{title}</div>
         <div className={Style.content}>{children}</div>
-        <div className={Style.actions}>
+        <ButtonRowElement>
           <ButtonElement key="close" onClick={onClose} label="Close" />
           {
             actions.map((action, i) => (
               <ButtonElement key={i} onClick={action.onClick} label={action.label} type={action.type} />
             ))
           }
-        </div>
+        </ButtonRowElement>
       </div>
     </div>
   );

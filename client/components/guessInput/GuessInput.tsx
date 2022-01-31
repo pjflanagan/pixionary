@@ -3,6 +3,7 @@ import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'reac
 
 import Style from './style.module.scss';
 import { useEffectOnce } from 'react-use';
+import { ButtonElement, ButtonRowElement } from 'elements';
 
 type GuessInputProps = {
   disabled?: boolean;
@@ -148,11 +149,14 @@ const GuessInput: FC<GuessInputProps> = ({
   }
 
   return (
-    // Info row
-    <div className={Style.inputHolder}>
-      {renderSegments()}
-    </div>
-    // Submit button
+    <>
+      <div className={Style.inputHolder}>
+        {renderSegments()}
+      </div>
+      <ButtonRowElement>
+        <ButtonElement onClick={handleSubmit} label="Guess" type='primary' />
+      </ButtonRowElement>
+    </>
   );
 
 }
