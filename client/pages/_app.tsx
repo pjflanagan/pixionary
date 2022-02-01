@@ -14,7 +14,7 @@ const HANDLE = "@peterjflan";
 
 const GOOGLE_ANALYTICS_TAG = 'G-CNFGV4ZHRG';
 
-function App({ Component, pageProps }) {
+const App = ({ Component, pageProps }) => {
   return (
     <>
       <Head>

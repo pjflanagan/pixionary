@@ -7,7 +7,7 @@ import Style from './style.module.scss';
 import Logo from './logo.png';
 import { ButtonElementProps, PopupElement } from 'elements';
 
-const HeaderComponent: FC = () => {
+const HeaderElement: FC = () => {
 
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -40,4 +40,4 @@ const HeaderComponent: FC = () => {
 }
 
 
-export { HeaderComponent };
+export { HeaderElement };

@@ -2,14 +2,14 @@
 import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'react';
 
 import Style from './style.module.scss';
-import { useEffectOnce } from 'react-use';
+import { useCounter, useEffectOnce } from 'react-use';
 import { ButtonElement, ButtonRowElement } from 'elements';
 
 type GuessInputProps = {
   disabled?: boolean;
   correctWord: string;
   onCorrect: () => void;
-  // TODO: onFail
+  onIncorrect: () => void;
 }
 
 // TODO: Show a guess count
@@ -27,23 +27,24 @@ const GuessInput: FC<GuessInputProps> = ({
   disabled,
   correctWord,
   onCorrect,
-  // onFail
+  onIncorrect
 }) => {
   const characterCount = correctWord.replace(' ', '').length;
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
+  const [tries, { dec }] = useCounter(3);
 
   const initInvalidSegments = [...Array(characterCount)].fill(false);
   const [invalidSegments, setInvalidSegments] = useState(initInvalidSegments);
+
+  useEffectOnce(() => {
+    segmentRefs[0].current.focus();
+  });
 
   const setInvalidSegment = (index: number, isInvalid: boolean) => {
     invalidSegments[index] = isInvalid;
     setInvalidSegments([...invalidSegments]);
   }
-
-  useEffectOnce(() => {
-    segmentRefs[0].current.focus();
-  });
 
   const validate = (): boolean => {
     const correctWordNoSpaces = correctWord.replaceAll(' ', '');

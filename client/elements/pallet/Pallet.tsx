@@ -1,18 +1,17 @@
 
-import React, { FC, useEffect } from 'react';
-import { useEffectOnce } from 'react-use';
+import React, { FC } from 'react';
 
-import { PALLET, PALLET_INITIAL_COLOR, Color } from 'classes';
+import { PALLET, Color } from 'classes';
 
 import { SwatchElement } from './Swatch';
 import Style from './style.module.scss';
 
-type PalletComponentProps = {
+type PalletElementProps = {
   setColor: (color: Color) => void;
   selectedColor: Color;
 }
 
-const PalletComponent: FC<PalletComponentProps> = ({
+const PalletElement: FC<PalletElementProps> = ({
   setColor,
   selectedColor
 }) => {
@@ -49,4 +48,4 @@ const PalletComponent: FC<PalletComponentProps> = ({
 }
 
 
-export { PalletComponent };
+export { PalletElement };

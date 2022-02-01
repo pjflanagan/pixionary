@@ -4,18 +4,18 @@ import React, { FC, useState } from 'react';
 import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
 
 import { PixelElement } from './Pixel';
-import { TitleComponent } from './Title';
+import { TitleElement } from './Title';
 
 import Style from './style.module.scss';
 
-type CanvasDrawComponentProps = {
+type CanvasDrawElementProps = {
   color: Color;
   pixels: Pixel[];
   setPixels: (newPixels: Pixel[]) => void;
   title: DrawingTitle;
 }
 
-const CanvasDrawComponent: FC<CanvasDrawComponentProps> = ({
+const CanvasDrawElement: FC<CanvasDrawElementProps> = ({
   color,
   pixels,
   setPixels,
@@ -35,7 +35,7 @@ const CanvasDrawComponent: FC<CanvasDrawComponentProps> = ({
 
   return (
     <>
-      <TitleComponent title={title} visible={true} />
+      <TitleElement title={title} visible={true} />
       <div className={Style.gridContainer}>
         <div className={Style.gridHolder}>
           <div
@@ -80,4 +80,4 @@ const CanvasDrawComponent: FC<CanvasDrawComponentProps> = ({
 }
 
 
-export { CanvasDrawComponent };
+export { CanvasDrawElement };

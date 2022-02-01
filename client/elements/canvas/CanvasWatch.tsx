@@ -5,18 +5,18 @@ import { useInterval } from 'react-use';
 import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
 
 import { PixelElement } from './Pixel';
-import { TitleComponent } from './Title';
+import { TitleElement } from './Title';
 
 import Style from './style.module.scss';
 
-type CanvasWatchComponentProps = {
+type CanvasWatchElementProps = {
   pixels: Pixel[];
   title: DrawingTitle;
   titleVisible: boolean;
   isPlaying: boolean;
 }
 
-const CanvasWatchComponent: FC<CanvasWatchComponentProps> = ({
+const CanvasWatchElement: FC<CanvasWatchElementProps> = ({
   pixels,
   title,
   titleVisible,
@@ -46,7 +46,7 @@ const CanvasWatchComponent: FC<CanvasWatchComponentProps> = ({
 
   return (
     <>
-      <TitleComponent title={title} visible={titleVisible} />
+      <TitleElement title={title} visible={titleVisible} />
       <div className={Style.gridContainer}>
         <div className={Style.gridHolder}>
           <div className={Style.grid}>
@@ -79,4 +79,4 @@ const CanvasWatchComponent: FC<CanvasWatchComponentProps> = ({
 }
 
 
-export { CanvasWatchComponent };
+export { CanvasWatchElement };

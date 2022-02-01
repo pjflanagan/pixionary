@@ -11,7 +11,7 @@ const ButtonRowElement: FC<ButtonRowElementProps> = ({
 }) => {
 
   return (
-    <div className={Style.buttonRow} >
+    <div className={Style.buttonRow}>
       {children}
     </div>
   );

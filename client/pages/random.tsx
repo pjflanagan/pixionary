@@ -8,7 +8,7 @@ const PageRandom: NextPage = () => {
         <title>Pixionary: Random</title>
         <meta name="description" content="A pixel picture puzzle" />
       </Head>
-      {/* component */}
+      {/* Element */}
     </>
   )
 }

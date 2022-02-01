@@ -5,12 +5,12 @@ import { DrawingTitle, GameMode } from 'classes';
 
 import Style from './style.module.scss';
 
-type TitleComponentProps = {
+type TitleElementProps = {
   title: DrawingTitle;
   visible: boolean;
 }
 
-const TitleComponent: FC<TitleComponentProps> = ({
+const TitleElement: FC<TitleElementProps> = ({
   title,
   visible,
 }) => {
@@ -28,4 +28,4 @@ const TitleComponent: FC<TitleComponentProps> = ({
 }
 
 
-export { TitleComponent };
+export { TitleElement };
