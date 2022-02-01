@@ -1,12 +1,11 @@
 
 import { FC, useState } from 'react';
 
-import { GameMode } from 'classes'
-import { ContainerElement, HeaderElement, PromptElement } from 'elements';
+import { ButtonElement, ButtonRowElement, ContainerElement, HeaderElement, NotificationElement, PromptElement, useNotification } from 'elements';
 
 import { DrawComponent } from './draw';
 import { GuessComponent } from './guess';
-import { useEffectOnce } from 'react-use';
+import { useCopyToClipboard, useEffectOnce } from 'react-use';
 
 const START_PROMPTS = [
   'Are you ready?',
@@ -22,7 +21,7 @@ const GUESS_PROMPTS = [
 const DRAW_PROMPTS = [
   'Can you draw?',
   `Let's draw!`,
-  'Paint _, like one of your pixelated French girls'
+  'Time to paint'
 ];
 
 const REVEAL_CORRECT_PROMPT = [
@@ -43,9 +42,23 @@ export type CycleGameModeProps = {
   isGuessCorrect?: boolean;
 }
 
+export enum GameMode {
+  START,
+  GUESS,
+  REVEAL,
+  DRAW,
+  THANKS
+}
+
 const DailyComponent: FC = () => {
 
-  const [gameMode, setGameMode] = useState<GameMode>('START');
+  // TODO: store game state in the storage with the loaded drawings
+  // determine if it is a new day and we need to update the game state
+  // const [value, setValue, remove] = useLocalStorage('daily--gameMode', 'foo');
+  const [gameMode, setGameMode] = useState<GameMode>(GameMode.START);
+  const [_state, copyToClipboard] = useCopyToClipboard();
+  const [isOpen, message, sendNotification] = useNotification();
+
   const [prompt, setPrompt] = useState({
     text: '',
     color: undefined
@@ -60,43 +73,83 @@ const DailyComponent: FC = () => {
 
   const cycleGameMode = (nextGameMode: GameMode, props: CycleGameModeProps = {}) => {
     switch (nextGameMode) {
-      case 'GUESS':
+      case GameMode.GUESS:
         setPrompt({
           text: getRandomFromArray(GUESS_PROMPTS),
           color: undefined
         });
         break;
-      case 'REVEAL':
+      case GameMode.REVEAL:
         setPrompt({
           text: (props.isGuessCorrect) ? getRandomFromArray(REVEAL_CORRECT_PROMPT) : getRandomFromArray(REVEAL_INCORRECT_PROMPT),
           color: (props.isGuessCorrect) ? 'green' : 'red',
         });
         break;
-      case 'DRAW':
+      case GameMode.DRAW:
         setPrompt({
           text: getRandomFromArray(DRAW_PROMPTS),
           color: undefined
         });
         break;
+      case GameMode.THANKS:
+        setPrompt({
+          text: `Thanks for playing! See you tomorrow!`,
+          color: undefined
+        });
     }
     setGameMode(nextGameMode);
   }
 
+  const handleShare = () => {
+    copyToClipboard('Pixionary #12 - 1:28');
+    sendNotification('Copied score to clipboard');
+  }
+
+  const renderButtonRow = () => {
+    switch (gameMode) {
+      case GameMode.START:
+        return (
+          <ButtonRowElement>
+            <ButtonElement label="Start" onClick={() => cycleGameMode(GameMode.GUESS)} type="primary" />
+          </ButtonRowElement>
+        );
+      case GameMode.REVEAL:
+        return (
+          <ButtonRowElement>
+            <ButtonElement label="Share" onClick={handleShare} type="secondary" />
+            <ButtonElement label="Continue" onClick={() => cycleGameMode(GameMode.DRAW)} type="primary" />
+          </ButtonRowElement>
+        );
+      case GameMode.THANKS:
+        return (
+          <ButtonRowElement>
+            <ButtonElement label="Share" onClick={handleShare} type="secondary" />
+          </ButtonRowElement>
+        );
+    }
+    return null;
+  }
 
   return (
-    <ContainerElement>
-      <HeaderElement />
-      <PromptElement
-        color={prompt.color}
-        text={prompt.text}
-      />
-      {
-        gameMode === 'DRAW' && <DrawComponent />
-      }
-      {
-        gameMode !== 'DRAW' && <GuessComponent gameMode={gameMode} cycleGameMode={cycleGameMode} />
-      }
-    </ContainerElement>
+    <>
+      <NotificationElement isOpen={isOpen} text={message} />
+      <ContainerElement>
+        <HeaderElement />
+        <PromptElement
+          color={prompt.color}
+          text={prompt.text}
+        />
+        {
+          gameMode === GameMode.DRAW && <DrawComponent cycleGameMode={cycleGameMode} />
+        }
+        {
+          gameMode !== GameMode.DRAW && <GuessComponent gameMode={gameMode} cycleGameMode={cycleGameMode} />
+        }
+        {
+          renderButtonRow()
+        }
+      </ContainerElement>
+    </>
   )
 }
 

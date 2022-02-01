@@ -5,6 +5,8 @@ import Style from './style.module.scss';
 import { useCounter, useEffectOnce } from 'react-use';
 import { ButtonElement, ButtonRowElement } from 'elements';
 
+type Validity = 'error' | 'warn' | 'valid';
+
 type GuessInputProps = {
   disabled?: boolean;
   correctWord: string;
@@ -12,18 +14,7 @@ type GuessInputProps = {
   onIncorrect: () => void;
 }
 
-// TODO: Show a guess count
-// TODO: show a timer
-
-/*
-
-Remaining Guesses: 3         1:24
-
-           _ _ _ _ _ _
-
-*/
-
-const GuessInput: FC<GuessInputProps> = ({
+const SegmentedInput: FC<GuessInputProps> = ({
   disabled,
   correctWord,
   onCorrect,
@@ -46,25 +37,30 @@ const GuessInput: FC<GuessInputProps> = ({
     setInvalidSegments([...invalidSegments]);
   }
 
-  const validate = (): boolean => {
+  const validate = (): Validity => {
     const correctWordNoSpaces = correctWord.replaceAll(' ', '');
-    let isValid = true;
+    let validity: Validity = 'valid';
     value.forEach((char, i) => {
-      if (char.toUpperCase() !== correctWordNoSpaces[i].toUpperCase()) {
+      if (!char) {
+        // if there is no character, don't penalize, just mark it an error
         setInvalidSegment(i, true);
-        isValid = false;
+        validity = 'warn';
+      } else if (char.toUpperCase() !== correctWordNoSpaces[i].toUpperCase()) {
+        setInvalidSegment(i, true);
+        if (validity !== 'warn') {
+          validity = 'error';
+        }
       }
     });
-    return isValid;
+    return validity;
   }
 
   const handleSubmit = () => {
-    const correctWordNoSpaces = correctWord.replaceAll(' ', '');
-    if (correctWordNoSpaces.length !== value.length) {
-      return false;
-    }
-    if (validate()) {
+    const validity = validate();
+    if (validity === 'valid') {
       onCorrect();
+    } else if (validity === 'error') {
+      onIncorrect();
     }
   }
 
@@ -163,4 +159,4 @@ const GuessInput: FC<GuessInputProps> = ({
 }
 
 
-export { GuessInput };
+export { SegmentedInput };

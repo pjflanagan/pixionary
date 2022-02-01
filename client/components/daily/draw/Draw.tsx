@@ -1,16 +1,23 @@
 
 import { FC, useState } from 'react';
-import { useCopyToClipboard } from 'react-use';
 
-import { DrawingTitle, PALLET_INITIAL_COLOR, GameMode, Puzzle, Pixel } from 'classes'
-import { ButtonElement, ButtonRowElement, ContainerElement, PalletElement, HeaderElement, GuessInput, PromptElement, CanvasDrawElement, CanvasWatchElement } from 'elements';
+import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel } from 'classes'
+import { ButtonElement, ButtonRowElement, PalletElement, CanvasDrawElement } from 'elements';
+
+import { GameMode } from '..';
 
 const PROMPT: DrawingTitle = {
   name: 'Jerry Smith',
   source: 'Rick and Morty'
 }
 
-const DrawComponent: FC = () => {
+type DrawComponentProps = {
+  cycleGameMode: (gameMode: GameMode) => void;
+}
+
+const DrawComponent: FC<DrawComponentProps> = ({
+  cycleGameMode
+}) => {
 
   // Draw
   const [drawPrompt, setDrawPrompt] = useState(PROMPT);
@@ -18,7 +25,12 @@ const DrawComponent: FC = () => {
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
   const handleSubmitDrawing = () => {
+    // TODO: popup that asks for confirmation
+    cycleGameMode(GameMode.THANKS);
+  }
 
+  const handleSkip = () => {
+    cycleGameMode(GameMode.THANKS);
   }
 
   const drawingTitle = drawPrompt;
@@ -36,10 +48,9 @@ const DrawComponent: FC = () => {
         selectedColor={color}
       />
       <ButtonRowElement>
-        <ButtonElement label="Clear" onClick={() => setDrawPixels([])} />
-        <ButtonElement label="Skip" onClick={() => console.log('skip')} type="secondary" />
-        {/* TODO: open a popup that asks to confirm, with a share dialogue */}
-        <ButtonElement label="Submit" onClick={() => console.log('submit')} type="primary" />
+        <ButtonElement label="Clear" onClick={() => setDrawPixels([])} doubleClick />
+        <ButtonElement label="Skip" onClick={handleSkip} type="secondary" doubleClick />
+        <ButtonElement label="Submit" onClick={handleSubmitDrawing} type="primary" doubleClick />
       </ButtonRowElement>
     </>
   )

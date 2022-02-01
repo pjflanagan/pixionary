@@ -1,7 +1,7 @@
 
 import React, { FC } from 'react';
 
-import { DrawingTitle, GameMode } from 'classes';
+import { DrawingTitle } from 'classes';
 
 import Style from './style.module.scss';
 

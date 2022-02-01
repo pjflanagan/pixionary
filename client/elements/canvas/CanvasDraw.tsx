@@ -1,7 +1,7 @@
 
 import React, { FC, useState } from 'react';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, addPixel, DrawingTitle } from 'classes';
 
 import { PixelElement } from './Pixel';
 import { TitleElement } from './Title';

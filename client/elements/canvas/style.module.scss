@@ -1,8 +1,8 @@
 .title {
   text-align: center;
-  background: #000;
-  color: #fff;
-  padding-top: 6px;
+  background: #0001;
+  color: #000;
+  padding-top: 0.6em;
   height: 1.8em;
 
   .name {
@@ -21,10 +21,10 @@
   width: 100%;
   padding-top: 100%;
   position: relative;
-  background: #000;
+  background: #0001;
 
   .gridHolder {
-    margin-top: -100%;
+    margin-top: calc(-100% + 12px);
     margin-left: 12px;
     position: absolute;
     width: calc(100% - 24px);

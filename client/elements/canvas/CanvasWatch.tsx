@@ -2,7 +2,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useInterval } from 'react-use';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, GameMode, addPixel, DrawingTitle } from 'classes';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, addPixel, DrawingTitle } from 'classes';
 
 import { PixelElement } from './Pixel';
 import { TitleElement } from './Title';

@@ -2,9 +2,11 @@
 import { FC, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
-import { GameMode, Puzzle } from 'classes'
-import { ButtonElement, ButtonRowElement, GuessInput, CanvasWatchElement } from 'elements';
-import { CycleGameModeProps } from '..';
+import { Puzzle } from 'classes'
+import { ButtonElement, ButtonRowElement, CanvasWatchElement, NotificationElement, useNotification } from 'elements';
+
+import { CycleGameModeProps, GameMode } from '..';
+import { GuessInput } from './guessInput';
 
 const PUZZLE: Puzzle = {
   answer: {
@@ -22,46 +24,34 @@ type GuessComponentProps = {
 const GuessComponent: FC<GuessComponentProps> = ({
   gameMode,
   cycleGameMode
+  // TODO: setScore() here so we can copy later, 
 }) => {
-  const [_state, copyToClipboard] = useCopyToClipboard();
-
   // TODO: onload get the puzzle from backend and set it
+  // if the puzzle has been loaded for today, don't reload it
   const [puzzle, setPuzzle] = useState(PUZZLE);
 
   const handleSubmitCorrectGuess = () => {
-    cycleGameMode('REVEAL', { isGuessCorrect: true });
+    cycleGameMode(GameMode.REVEAL, { isGuessCorrect: true });
   }
 
   const handleSubmitIncorrectGuess = () => {
-    cycleGameMode('REVEAL', { isGuessCorrect: false });
+    cycleGameMode(GameMode.REVEAL, { isGuessCorrect: false });
   }
 
   return (
     <>
       <CanvasWatchElement
         pixels={puzzle.pixels}
-        isPlaying={gameMode === 'GUESS' || gameMode === 'REVEAL'}
-        titleVisible={gameMode === 'REVEAL'}
+        isPlaying={gameMode !== GameMode.START}
+        titleVisible={gameMode === GameMode.REVEAL || gameMode === GameMode.THANKS}
         title={puzzle.answer}
       />
-      {/* TODO: these might look better in one render function */}
       {
-        gameMode === 'START' && <ButtonRowElement>
-          <ButtonElement label="Start" onClick={() => cycleGameMode('GUESS')} type="primary" />
-        </ButtonRowElement>
-      }
-      {
-        gameMode === 'GUESS' && <GuessInput
+        gameMode === GameMode.GUESS && <GuessInput
           correctWord={puzzle.answer.name || ''}
           onCorrect={handleSubmitCorrectGuess}
           onIncorrect={handleSubmitIncorrectGuess}
         />
-      }
-      {
-        gameMode === 'REVEAL' && <ButtonRowElement>
-          <ButtonElement label="Share" onClick={() => copyToClipboard('Pixionary #12 - 1:28')} type="secondary" />
-          <ButtonElement label="Continue" onClick={() => cycleGameMode('DRAW')} type="primary" />
-        </ButtonRowElement>
       }
     </>
   )
