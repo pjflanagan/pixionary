@@ -1,9 +1,8 @@
 
-import { FC, useEffect, useState } from 'react';
-import { useCopyToClipboard } from 'react-use';
+import { FC, useState } from 'react';
 
-import { Puzzle } from 'classes'
-import { ButtonElement, ButtonRowElement, CanvasWatchElement, NotificationElement, useNotification } from 'elements';
+import { Puzzle } from 'model'
+import { CanvasWatchElement } from 'elements';
 
 import { DailyScore, GameMode } from '..';
 import { GuessInput } from './guessInput';

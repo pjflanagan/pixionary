@@ -46,8 +46,6 @@ const ButtonRowComponent: FC<ButtonRowComponentProps> = ({
     return null;
   }
 
-
-
   return (
     <>
       {renderButtonRow()}

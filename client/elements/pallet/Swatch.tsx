@@ -2,7 +2,7 @@
 import React, { FC } from 'react';
 import classNames from 'classnames';
 
-import { Color } from 'classes';
+import { Color } from 'model';
 
 import Style from './style.module.scss';
 

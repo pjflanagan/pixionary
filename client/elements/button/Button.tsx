@@ -20,10 +20,14 @@ const ButtonElement: FC<ButtonElementProps> = ({
   const [clickCount, setClickCount] = useState(0);
 
   useEffect(() => {
+    let timeout;
     if (clickCount === 1) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         setClickCount(0);
       }, 2000);
+    }
+    return () => {
+      clearTimeout(timeout);
     }
   }, [clickCount]);
 

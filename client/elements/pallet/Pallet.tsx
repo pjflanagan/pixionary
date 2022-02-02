@@ -1,7 +1,7 @@
 
 import React, { FC } from 'react';
 
-import { PALLET, Color } from 'classes';
+import { PALLET, Color } from 'model';
 
 import { SwatchElement } from './Swatch';
 import Style from './style.module.scss';

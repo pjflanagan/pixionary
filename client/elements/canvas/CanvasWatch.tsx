@@ -2,7 +2,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useInterval } from 'react-use';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, addPixel, DrawingTitle } from 'classes';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, addPixel, DrawingTitle } from 'model';
 
 import { PixelElement } from './Pixel';
 import { TitleElement } from './Title';
@@ -13,7 +13,8 @@ type CanvasWatchElementProps = {
   pixels: Pixel[];
   title: DrawingTitle;
   titleVisible: boolean;
-  isPlaying: boolean;
+  isPlaying: boolean; // TODO: jump to end and pause
+  isValid?: boolean; // true is valid, false is invalid, undefined is no response
 }
 
 const CanvasWatchElement: FC<CanvasWatchElementProps> = ({
@@ -44,7 +45,10 @@ const CanvasWatchElement: FC<CanvasWatchElementProps> = ({
     setPixelIndex(pixelIndex + 1);
   }, intervalSpeed);
 
+  // const className = 
+
   return (
+    // TODO: wrap the whole thing in a container and put both inside
     <>
       <TitleElement title={title} visible={titleVisible} />
       <div className={Style.gridContainer}>

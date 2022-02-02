@@ -2,7 +2,7 @@
 import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'react';
 
 import Style from './style.module.scss';
-import { useCounter, useEffectOnce } from 'react-use';
+import { useEffectOnce } from 'react-use';
 import { ButtonElement, ButtonRowElement } from 'elements';
 import classNames from 'classnames';
 
@@ -23,6 +23,7 @@ const SegmentedInput: FC<GuessInputProps> = ({
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
   const [isCorrect, setIsCorrect] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const initInvalidSegments = [...Array(characterCount)].fill(false);
   const [invalidSegments, setInvalidSegments] = useState(initInvalidSegments);
@@ -59,8 +60,10 @@ const SegmentedInput: FC<GuessInputProps> = ({
     if (validity === 'valid') {
       setIsCorrect(true);
       onCorrect();
+      setHasSubmitted(true);
     } else if (validity === 'error') {
       onIncorrect();
+      setHasSubmitted(true);
     }
   }
 
@@ -154,9 +157,12 @@ const SegmentedInput: FC<GuessInputProps> = ({
       <div className={Style.inputHolder}>
         {renderSegments()}
       </div>
-      <ButtonRowElement>
-        <ButtonElement onClick={handleSubmit} label="Guess" type='primary' />
-      </ButtonRowElement>
+      {
+        !hasSubmitted && <ButtonRowElement>
+          <ButtonElement onClick={handleSubmit} label="Guess" type='primary' />
+        </ButtonRowElement>
+      }
+
     </>
   );
 

@@ -27,7 +27,7 @@ const HeaderElement: FC = () => {
     <>
       <PopupElement isOpen={isPopupOpen} title="Info" actions={popupActions} onClose={() => setIsPopupOpen(false)}>
         <p>Pixionary is a pop culture drawing game with pixels.</p>
-        <p>First, guess the character being drawn. The faster you guess, the better your score!</p>
+        <p>First, guess the character being drawn. The faster you guess, the better your score! But watch out, you only get 3 chances.</p>
         <p>Next, draw a character that might be used as a puzzle in the future.</p>
       </PopupElement>
       <div className={Style.header}>

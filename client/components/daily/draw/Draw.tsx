@@ -1,7 +1,7 @@
 
 import { FC, useState } from 'react';
 
-import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel } from 'classes'
+import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel } from 'model'
 import { ButtonElement, ButtonRowElement, PalletElement, CanvasDrawElement } from 'elements';
 
 import { GameMode } from '..';
