@@ -22,7 +22,12 @@
         border-bottom: 3px solid #0008;
       }
 
-      &.invalid {
+      &.correct {
+        border-bottom: 3px solid #0c9c0c;
+        color: #0c9c0c;
+      }
+
+      &.invalid:not(.correct) {
         border-bottom: 3px solid #f00;
         color: #f00;
       }

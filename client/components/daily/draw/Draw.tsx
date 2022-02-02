@@ -25,7 +25,6 @@ const DrawComponent: FC<DrawComponentProps> = ({
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
   const handleSubmitDrawing = () => {
-    // TODO: popup that asks for confirmation
     cycleGameMode(GameMode.THANKS);
   }
 

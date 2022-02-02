@@ -1,11 +1,11 @@
 
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useCopyToClipboard } from 'react-use';
 
 import { Puzzle } from 'classes'
 import { ButtonElement, ButtonRowElement, CanvasWatchElement, NotificationElement, useNotification } from 'elements';
 
-import { CycleGameModeProps, GameMode } from '..';
+import { DailyScore, GameMode } from '..';
 import { GuessInput } from './guessInput';
 
 const PUZZLE: Puzzle = {
@@ -18,39 +18,48 @@ const PUZZLE: Puzzle = {
 
 type GuessComponentProps = {
   gameMode: GameMode;
-  cycleGameMode: (newGameMode: GameMode, props?: CycleGameModeProps) => void;
+  onSubmit: (newScore: DailyScore) => void;
 }
 
 const GuessComponent: FC<GuessComponentProps> = ({
   gameMode,
-  cycleGameMode
-  // TODO: setScore() here so we can copy later, 
+  onSubmit
 }) => {
   // TODO: onload get the puzzle from backend and set it
   // if the puzzle has been loaded for today, don't reload it
   const [puzzle, setPuzzle] = useState(PUZZLE);
 
-  const handleSubmitCorrectGuess = () => {
-    cycleGameMode(GameMode.REVEAL, { isGuessCorrect: true });
-  }
+  const titleVisible = (() => {
+    switch (gameMode) {
+      case GameMode.REVEAL:
+      case GameMode.STATS:
+      case GameMode.THANKS:
+        return true;
+    }
+    return false;
+  })();
 
-  const handleSubmitIncorrectGuess = () => {
-    cycleGameMode(GameMode.REVEAL, { isGuessCorrect: false });
-  }
+  const inputVisible = (() => {
+    switch (gameMode) {
+      case GameMode.GUESS:
+      case GameMode.REVEAL:
+        return true;
+    }
+    return false;
+  })();
 
   return (
     <>
       <CanvasWatchElement
         pixels={puzzle.pixels}
         isPlaying={gameMode !== GameMode.START}
-        titleVisible={gameMode === GameMode.REVEAL || gameMode === GameMode.THANKS}
+        titleVisible={titleVisible}
         title={puzzle.answer}
       />
       {
-        gameMode === GameMode.GUESS && <GuessInput
+        inputVisible && <GuessInput
           correctWord={puzzle.answer.name || ''}
-          onCorrect={handleSubmitCorrectGuess}
-          onIncorrect={handleSubmitIncorrectGuess}
+          onSubmit={onSubmit}
         />
       }
     </>

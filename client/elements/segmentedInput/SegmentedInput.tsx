@@ -4,18 +4,17 @@ import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'reac
 import Style from './style.module.scss';
 import { useCounter, useEffectOnce } from 'react-use';
 import { ButtonElement, ButtonRowElement } from 'elements';
+import classNames from 'classnames';
 
 type Validity = 'error' | 'warn' | 'valid';
 
 type GuessInputProps = {
-  disabled?: boolean;
   correctWord: string;
   onCorrect: () => void;
   onIncorrect: () => void;
 }
 
 const SegmentedInput: FC<GuessInputProps> = ({
-  disabled,
   correctWord,
   onCorrect,
   onIncorrect
@@ -23,7 +22,7 @@ const SegmentedInput: FC<GuessInputProps> = ({
   const characterCount = correctWord.replace(' ', '').length;
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
-  const [tries, { dec }] = useCounter(3);
+  const [isCorrect, setIsCorrect] = useState(false);
 
   const initInvalidSegments = [...Array(characterCount)].fill(false);
   const [invalidSegments, setInvalidSegments] = useState(initInvalidSegments);
@@ -58,6 +57,7 @@ const SegmentedInput: FC<GuessInputProps> = ({
   const handleSubmit = () => {
     const validity = validate();
     if (validity === 'valid') {
+      setIsCorrect(true);
       onCorrect();
     } else if (validity === 'error') {
       onIncorrect();
@@ -107,6 +107,10 @@ const SegmentedInput: FC<GuessInputProps> = ({
   }
 
   const renderInputSegment = (i: number) => {
+    const className = classNames({
+      [Style.correct]: isCorrect,
+      [Style.invalid]: invalidSegments[i]
+    })
     return (
       <div
         key={`char-${i}`}
@@ -120,11 +124,11 @@ const SegmentedInput: FC<GuessInputProps> = ({
           maxLength={1}
           ref={segmentRefs[i]}
           value={value && value[i] ? value[i] : ''}
-          className={invalidSegments[i] ? Style.invalid : ''}
+          className={className}
           tabIndex={0}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e, i)}
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onKeyDown(e, i)}
-          disabled={disabled}
+          disabled={isCorrect}
         />
       </div>
     )
