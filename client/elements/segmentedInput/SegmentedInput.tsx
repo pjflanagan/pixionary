@@ -1,8 +1,8 @@
 
-import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState } from 'react';
+import React, { createRef, FC, KeyboardEvent, ChangeEvent, useState, useEffect } from 'react';
 
 import Style from './style.module.scss';
-import { useEffectOnce } from 'react-use';
+import { useEffectOnce, useSetState } from 'react-use';
 import { ButtonElement, ButtonRowElement } from 'elements';
 import classNames from 'classnames';
 
@@ -12,21 +12,25 @@ type GuessInputProps = {
   correctWord: string;
   onCorrect: () => void;
   onIncorrect: () => void;
+  disabled: boolean;
 }
 
+// TODO: break this into <Segment /> and pass in data
 const SegmentedInput: FC<GuessInputProps> = ({
   correctWord,
   onCorrect,
-  onIncorrect
+  onIncorrect,
+  disabled,
 }) => {
   const characterCount = correctWord.replace(' ', '').length;
   const [value, setValue] = useState<string[]>([...Array(characterCount)]);
   const segmentRefs = [...Array(characterCount)].map(() => createRef<HTMLInputElement>());
   const [isCorrect, setIsCorrect] = useState(false);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const initInvalidSegments = [...Array(characterCount)].fill(false);
   const [invalidSegments, setInvalidSegments] = useState(initInvalidSegments);
+
+  const [isErrorAnimation, setIsErrorAnimation] = useState(false);
 
   useEffectOnce(() => {
     segmentRefs[0].current.focus();
@@ -60,10 +64,9 @@ const SegmentedInput: FC<GuessInputProps> = ({
     if (validity === 'valid') {
       setIsCorrect(true);
       onCorrect();
-      setHasSubmitted(true);
     } else if (validity === 'error') {
       onIncorrect();
-      setHasSubmitted(true);
+      setIsErrorAnimation(true);
     }
   }
 
@@ -72,6 +75,8 @@ const SegmentedInput: FC<GuessInputProps> = ({
       segmentRefs[segmentIndex].current.focus();
     }
   }
+
+  // Events
 
   const onChange = (event: ChangeEvent<HTMLInputElement>, index: number) => {
     const { maxLength, value: segmentValue } = event.target;
@@ -96,6 +101,8 @@ const SegmentedInput: FC<GuessInputProps> = ({
       focusSegment(index - 1);
     }
   }
+
+  // Render
 
   const renderGap = (i: number) => {
     return (
@@ -131,7 +138,7 @@ const SegmentedInput: FC<GuessInputProps> = ({
           tabIndex={0}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e, i)}
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onKeyDown(e, i)}
-          disabled={isCorrect}
+          disabled={isCorrect || disabled}
         />
       </div>
     )
@@ -152,13 +159,17 @@ const SegmentedInput: FC<GuessInputProps> = ({
     return segments;
   }
 
+  const className = classNames(Style.inputHolder, {
+    [Style.invalidAnimation]: isErrorAnimation
+  });
+
   return (
     <>
-      <div className={Style.inputHolder}>
+      <div className={className} onAnimationEnd={() => setIsErrorAnimation(false)}>
         {renderSegments()}
       </div>
       {
-        !hasSubmitted && <ButtonRowElement>
+        !disabled && <ButtonRowElement>
           <ButtonElement onClick={handleSubmit} label="Guess" type='primary' />
         </ButtonRowElement>
       }

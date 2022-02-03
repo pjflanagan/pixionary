@@ -2,12 +2,13 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: 'Dongle', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   background: #eee;
   overflow-x: hidden;
   height: 100vh;
   width: 100vw;
+
 }
 
 a {
@@ -27,6 +28,5 @@ a {
 // TODO: all text needs to be using one of these because the text
 // is crazy, might need a new font honestly
 p {
-  font-size: 1.4em;
-  line-height: 0.8em;
+  font-size: 1em;
 }

@@ -32,29 +32,27 @@ const GuessInput: FC<GuessInputProps> = ({
   const [guessCount, { inc }] = useCounter(0);
   const [seconds, setSeconds] = useState(0);
   const [intervalSpeed, setIntervalSpeed] = useState(1000);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   useInterval(() => {
     setSeconds(seconds + 1);
   }, intervalSpeed);
 
-  const handleIncorrectGuess = () => {
-    if (guessCount === MAX_GUESSES) {
-      setIntervalSpeed(null);
-      onSubmit({
-        guessCount,
-        timeSeconds: seconds,
-      });
-      return;
-    }
-    inc();
-  }
-
-  const handleCorrectGuess = () => {
+  const handleSubmit = () => {
     setIntervalSpeed(null);
+    setHasSubmitted(true);
     onSubmit({
       guessCount,
       timeSeconds: seconds,
     });
+  }
+
+  const handleIncorrectGuess = () => {
+    if (guessCount === MAX_GUESSES) {
+      handleSubmit();
+      return;
+    }
+    inc();
   }
 
   return (
@@ -65,8 +63,9 @@ const GuessInput: FC<GuessInputProps> = ({
       </div>
       <SegmentedInput
         correctWord={correctWord}
-        onCorrect={handleCorrectGuess}
+        onCorrect={handleSubmit}
         onIncorrect={handleIncorrectGuess}
+        disabled={hasSubmitted}
       />
     </>
   );

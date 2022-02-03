@@ -2,21 +2,26 @@
   width: 100%;
   padding: 6px 0 0;
   border-bottom: 3px solid #0001;
+  display: flex;
+  justify-content: space-between;
 
   img {
     height: 24px !important;
   }
 
-  .infoLink {
-    float: right;
-    font-size: 1.2em;
-    line-height: 1.2em;
-    padding: 0 0.6em;
-    color: #000c;
-    cursor: pointer;
+  .actionHolder {
+    width: fit-content;
 
-    &:hover {
-      color: #000;
+    .infoLink {
+      float: right;
+      font-size: 0.8em;
+      padding: 0 0.6em;
+      color: #000c;
+      cursor: pointer;
+
+      &:hover {
+        color: #000;
+      }
     }
   }
 }

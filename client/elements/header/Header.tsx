@@ -32,7 +32,11 @@ const HeaderElement: FC = () => {
       </PopupElement>
       <div className={Style.header}>
         <Image alt="Pixionary" src={Logo} />
-        <span className={Style.infoLink} onClick={openPopup}>Info</span>
+        <div className={Style.actionHolder}>
+          {/* TODO: take actions: IconElementProps[] */}
+          <span className={Style.infoLink} onClick={openPopup}>Info</span>
+
+        </div>
       </div>
     </>
   );

@@ -100,6 +100,7 @@ const DailyComponent: FC = () => {
       />
       <NotificationElement isOpen={isOpen} text={message} />
       <ContainerElement>
+        {/* TODO: the header should take an actions */}
         <HeaderElement />
         <PromptComponent gameMode={gameMode} score={score} />
         {
