@@ -1,24 +1,12 @@
 
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useCounter, useInterval } from 'react-use';
 
-import { DailyScore, MAX_GUESSES } from '../../Daily';
+import { DailyScore, MAX_GUESSES } from 'models';
 import { SegmentedInput } from 'elements';
+import { formatTime } from 'utils';
 
 import Style from './style.module.scss';
-
-const formatTime = (totalSeconds: number): string => {
-  const minutes = `${Math.floor(totalSeconds / 60)}`.padStart(2, '0');
-  const seconds = `${Math.floor(totalSeconds % 60)}`.padStart(2, '0');
-  return `${minutes}:${seconds}`;
-}
-
-const formatGuessesRemaining = (guessesRemaining: number) => {
-  if (guessesRemaining === 0) {
-    return 'last chance!'
-  }
-  return guessesRemaining;
-}
 
 type GuessInputProps = {
   correctWord: string;
@@ -38,6 +26,13 @@ const GuessInput: FC<GuessInputProps> = ({
     setSeconds(seconds + 1);
   }, intervalSpeed);
 
+  useEffect(() => {
+    if (guessCount === MAX_GUESSES) {
+      handleSubmit();
+      return;
+    }
+  }, [guessCount]);
+
   const handleSubmit = () => {
     setIntervalSpeed(null);
     setHasSubmitted(true);
@@ -47,24 +42,16 @@ const GuessInput: FC<GuessInputProps> = ({
     });
   }
 
-  const handleIncorrectGuess = () => {
-    if (guessCount === MAX_GUESSES) {
-      handleSubmit();
-      return;
-    }
-    inc();
-  }
-
   return (
     <>
       <div className={Style.infoRow}>
-        <div className={Style.tries}>Guesses remaining: {formatGuessesRemaining(MAX_GUESSES - guessCount)}</div>
+        <div className={Style.tries}>Guesses remaining: {MAX_GUESSES - guessCount}</div>
         <div className={Style.timer}>{formatTime(seconds)}</div>
       </div>
       <SegmentedInput
         correctWord={correctWord}
         onCorrect={handleSubmit}
-        onIncorrect={handleIncorrectGuess}
+        onIncorrect={inc}
         disabled={hasSubmitted}
       />
     </>

@@ -1,7 +1,7 @@
 
 import React, { FC, useState } from 'react';
 
-import { Color, Pixel, getColor } from 'model';
+import { Color, Pixel, getColor } from 'models';
 
 import Style from './style.module.scss';
 

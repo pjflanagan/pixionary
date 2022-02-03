@@ -1,10 +1,8 @@
 
 import { FC, useState } from 'react';
 
-import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel } from 'model'
+import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel, GameMode } from 'models'
 import { ButtonElement, ButtonRowElement, PalletElement, CanvasDrawElement } from 'elements';
-
-import { GameMode } from '..';
 
 const PROMPT: DrawingTitle = {
   name: 'Jerry Smith',

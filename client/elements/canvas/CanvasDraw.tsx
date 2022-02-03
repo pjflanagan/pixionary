@@ -1,7 +1,7 @@
 
 import React, { FC, useState } from 'react';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, addPixel, DrawingTitle } from 'model';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, Color, addPixel, DrawingTitle } from 'models';
 
 import { PixelElement } from './Pixel';
 import { TitleElement } from './Title';
@@ -11,7 +11,7 @@ import Style from './style.module.scss';
 type CanvasDrawElementProps = {
   color: Color;
   pixels: Pixel[];
-  setPixels: (newPixels: Pixel[]) => void;
+  setPixels: (newPixels: Pixel[]) => void; // TODO: onPixelClick
   title: DrawingTitle;
 }
 

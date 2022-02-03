@@ -1,7 +1,7 @@
 
 import React, { FC } from 'react';
 
-import { DrawingTitle } from 'model';
+import { DrawingTitle } from 'models';
 
 import Style from './style.module.scss';
 

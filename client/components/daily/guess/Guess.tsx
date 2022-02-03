@@ -1,10 +1,9 @@
 
 import { FC, useState } from 'react';
 
-import { Puzzle } from 'model'
 import { CanvasWatchElement } from 'elements';
+import { Puzzle, DailyScore, GameMode } from 'models';
 
-import { DailyScore, GameMode } from '..';
 import { GuessInput } from './guessInput';
 
 const PUZZLE: Puzzle = {

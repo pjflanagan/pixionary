@@ -2,6 +2,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { ContainerElement, HeaderElement, NotificationElement, useNotification } from 'elements';
+import { DailyScore, didFail, GameMode, getShareText } from 'models';
 
 import { DrawComponent } from './draw';
 import { GuessComponent } from './guess';
@@ -9,30 +10,7 @@ import { useCopyToClipboard } from 'react-use';
 import { ButtonRowComponent } from './ButtonRow';
 import { PromptComponent } from './Prompt';
 import { PopupComponent } from './Popup';
-
-export enum GameMode {
-  START,
-  GUESS,
-  REVEAL,
-  STATS,
-  DRAW,
-  THANKS
-}
-
-export type DailyScore = {
-  guessCount: number;
-  timeSeconds: number;
-}
-
-export const MAX_GUESSES = 3;
-
-// TODO: TODO: TODO: TODO: move to a models/daily.ts
-export const didFail = (score?: DailyScore) => {
-  if (score) {
-    return score.guessCount === MAX_GUESSES;
-  }
-  return false;
-}
+import { formatTime } from 'utils';
 
 const DailyComponent: FC = () => {
 
@@ -83,8 +61,7 @@ const DailyComponent: FC = () => {
 
 
   const handleShare = () => {
-    // TODO: move this to models/daily.ts and utils/index.ts
-    copyToClipboard(`Pixionary #12 - ${score.timeSeconds} - ${score.guessCount + 1}/3`);
+    copyToClipboard(getShareText(score));
     sendNotification('Copied score to clipboard');
   }
 

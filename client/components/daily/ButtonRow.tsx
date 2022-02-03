@@ -2,7 +2,7 @@
 import { FC } from 'react';
 
 import { ButtonElement, ButtonRowElement } from 'elements';
-import { GameMode } from '.';
+import { GameMode } from 'models';
 
 type ButtonRowComponentProps = {
   isVisible: boolean;

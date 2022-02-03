@@ -1,10 +1,10 @@
 
 import { FC, useEffect, useState } from 'react';
-
-import { PromptElement } from 'elements';
-import { DailyScore, GameMode, didFail } from '.';
 import { useEffectOnce } from 'react-use';
 
+import { PromptElement } from 'elements';
+import { DailyScore, GameMode, didFail } from 'models';
+import { getRandomFromArray } from 'utils';
 
 const START_PROMPTS = [
   'Are you ready?',
@@ -32,10 +32,6 @@ const REVEAL_INCORRECT_PROMPT = [
   `Sorry 'bout it. The picture was:`,
   `Sorry sport, it was:`
 ];
-
-const getRandomFromArray = (phrases: string[]): string => {
-  return phrases[Math.floor(Math.random() * phrases.length)];
-}
 
 type PromptComponentProps = {
   gameMode: GameMode;

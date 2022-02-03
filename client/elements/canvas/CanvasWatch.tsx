@@ -2,7 +2,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import { useInterval } from 'react-use';
 
-import { Pixel, GRID_SIDE_ARRAY, findPixel, addPixel, DrawingTitle } from 'model';
+import { Pixel, GRID_SIDE_ARRAY, findPixel, addPixel, DrawingTitle } from 'models';
 
 import { PixelElement } from './Pixel';
 import { TitleElement } from './Title';
@@ -48,7 +48,7 @@ const CanvasWatchElement: FC<CanvasWatchElementProps> = ({
   // const className = 
 
   return (
-    // TODO: wrap the whole thing in a container and put both inside
+    // TODO: wrap this in an actual div
     <>
       <TitleElement title={title} visible={titleVisible} />
       <div className={Style.gridContainer}>
