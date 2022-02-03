@@ -5,9 +5,9 @@
 
   .button {
     margin: 0 0.2em;
-    padding: 0.2em 0.8em;
+    padding: 0.4em 0.8em;
     background: #0001;
-    font-size: 1.4em;
+    font-size: 1.2em;
     cursor: pointer;
     transition: background 0.2s;
 
@@ -33,6 +33,19 @@
         background: #e7cb2f;
         color: #000;
       }
+    }
+  }
+}
+
+.iconButton {
+  margin: 0 4px;
+
+  svg {
+    fill: #444;
+    cursor: pointer;
+
+    &:hover {
+      fill: #000;
     }
   }
 }
