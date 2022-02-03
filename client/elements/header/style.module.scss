@@ -11,17 +11,6 @@
 
   .actionHolder {
     width: fit-content;
-
-    .infoLink {
-      float: right;
-      font-size: 0.8em;
-      padding: 0 0.6em;
-      color: #000c;
-      cursor: pointer;
-
-      &:hover {
-        color: #000;
-      }
-    }
+    display: flex;
   }
 }

@@ -46,7 +46,7 @@ const DailyComponent: FC = () => {
 
   // UI
   const [isOpen, message, sendNotification] = useNotification();
-  const [isPopupOpen, setIsPopupOpen] = useState(true);
+  const [isPopupOpen, setIsPopupOpen] = useState(true); // TODO: popup type 'info' 'settings' 'stats' 
 
   // Actions
   const [_state, copyToClipboard] = useCopyToClipboard();
@@ -100,8 +100,20 @@ const DailyComponent: FC = () => {
       />
       <NotificationElement isOpen={isOpen} text={message} />
       <ContainerElement>
-        {/* TODO: the header should take an actions */}
-        <HeaderElement />
+        <HeaderElement actions={[
+          {
+            icon: 'info',
+            onClick: () => setIsPopupOpen(true)
+          },
+          {
+            icon: 'stats',
+            onClick: () => setIsPopupOpen(true)
+          },
+          {
+            icon: 'settings',
+            onClick: () => setIsPopupOpen(true)
+          },
+        ]} />
         <PromptComponent gameMode={gameMode} score={score} />
         {
           gameMode === GameMode.DRAW && <DrawComponent cycleGameMode={cycleGameMode} />

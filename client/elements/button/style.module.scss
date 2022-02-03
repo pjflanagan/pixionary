@@ -36,3 +36,16 @@
     }
   }
 }
+
+.iconButton {
+  margin: 0 4px;
+
+  svg {
+    fill: #444;
+    cursor: pointer;
+
+    &:hover {
+      fill: #000;
+    }
+  }
+}

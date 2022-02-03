@@ -16,6 +16,7 @@
     "pwa-asset-generator": "^6.0.6",
     "react": "17.0.2",
     "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
     "react-use": "^17.3.2",
     "sass": "^1.49.0"
   },
