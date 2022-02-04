@@ -110,21 +110,24 @@ const SegmentedInput: FC<GuessInputProps> = ({
         className={Style.segment}
         key={`gap-${i}`}
         style={{
-          maxWidth: `${100 / characterCount}%`
+          width: '4px'
         }}
       />
     )
   }
 
   const renderInputSegment = (i: number) => {
-    const className = classNames({
+    const segmentClassName = classNames(Style.segment, {
+      [Style.victoryAnimation]: isCorrect
+    });
+    const inputClassName = classNames({
       [Style.correct]: isCorrect,
-      [Style.invalid]: invalidSegments[i]
-    })
+      [Style.invalid]: invalidSegments[i],
+    });
     return (
       <div
         key={`char-${i}`}
-        className={Style.segment}
+        className={segmentClassName}
         style={{
           maxWidth: `${100 / characterCount}%`
         }}
@@ -134,7 +137,7 @@ const SegmentedInput: FC<GuessInputProps> = ({
           maxLength={1}
           ref={segmentRefs[i]}
           value={value && value[i] ? value[i] : ''}
-          className={className}
+          className={inputClassName}
           tabIndex={0}
           onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e, i)}
           onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => onKeyDown(e, i)}

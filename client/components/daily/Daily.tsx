@@ -1,16 +1,15 @@
 
 import { FC, useEffect, useState } from 'react';
+import { useCopyToClipboard } from 'react-use';
 
 import { ContainerElement, HeaderElement, NotificationElement, useNotification } from 'elements';
-import { DailyScore, didFail, GameMode, getShareText } from 'models';
+import { DailyScore, GameMode, getShareText } from 'models';
 
-import { DrawComponent } from './draw';
-import { GuessComponent } from './guess';
-import { useCopyToClipboard } from 'react-use';
 import { ButtonRowComponent } from './ButtonRow';
 import { PromptComponent } from './Prompt';
-import { PopupComponent } from './Popup';
-import { formatTime } from 'utils';
+import { DrawComponent } from './draw';
+import { GuessComponent } from './guess';
+import { PopupComponent } from './popup';
 
 const DailyComponent: FC = () => {
 
@@ -24,7 +23,7 @@ const DailyComponent: FC = () => {
 
   // UI
   const [isOpen, message, sendNotification] = useNotification();
-  const [isPopupOpen, setIsPopupOpen] = useState(true); // TODO: popup type 'info' 'settings' 'stats' 
+  const [popupState, setPopupState] = useState<'info' | 'settings' | 'stats' | 'none' >('info');
 
   // Actions
   const [_state, copyToClipboard] = useCopyToClipboard();
@@ -39,21 +38,21 @@ const DailyComponent: FC = () => {
   const cycleGameMode = (nextGameMode: GameMode) => {
     switch (nextGameMode) {
       case GameMode.GUESS: // -------------- 1. GUESS
-        setIsPopupOpen(false);
+      setPopupState('none');
         break;
       case GameMode.REVEAL: // -------------- 2. REVEAL
         setTimeout(() => {
-          setIsPopupOpen(true);
+          setPopupState('info');
           setGameMode(GameMode.STATS);
         }, 2600);
         break;
       case GameMode.STATS: // -------------- 3. STATS
         break;
       case GameMode.DRAW: // -------------- 4. DRAW
-        setIsPopupOpen(false);
+        setPopupState('none');
         break;
       case GameMode.THANKS: // -------------- 5. THANKS
-        setIsPopupOpen(true);
+        setPopupState('info');
         break;
     }
     setGameMode(nextGameMode);
@@ -68,9 +67,9 @@ const DailyComponent: FC = () => {
   return (
     <>
       <PopupComponent
+        popupState={popupState}
         gameMode={gameMode}
-        isOpen={isPopupOpen}
-        onClose={() => setIsPopupOpen(false)}
+        onClose={() => setPopupState('none')}
         cycleGameMode={cycleGameMode}
         score={score}
         onShare={handleShare}
@@ -78,18 +77,9 @@ const DailyComponent: FC = () => {
       <NotificationElement isOpen={isOpen} text={message} />
       <ContainerElement>
         <HeaderElement actions={[
-          {
-            icon: 'info',
-            onClick: () => setIsPopupOpen(true)
-          },
-          {
-            icon: 'stats',
-            onClick: () => setIsPopupOpen(true)
-          },
-          {
-            icon: 'settings',
-            onClick: () => setIsPopupOpen(true)
-          },
+          { icon: 'info', onClick: () => setPopupState('info') },
+          { icon: 'stats', onClick: () => setPopupState('stats') },
+          { icon: 'settings', onClick: () => setPopupState('settings') },
         ]} />
         <PromptComponent gameMode={gameMode} score={score} />
         {
@@ -103,7 +93,7 @@ const DailyComponent: FC = () => {
         }
         {
           <ButtonRowComponent
-            isVisible={isPopupOpen}
+            isVisible={popupState !== 'none'}
             gameMode={gameMode}
             handleShare={handleShare}
             cycleGameMode={cycleGameMode}

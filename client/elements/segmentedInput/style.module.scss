@@ -22,6 +22,16 @@
   }
 }
 
+@keyframes jump {
+  50% {
+    transform: translateY(-4px);
+  }
+
+  0%,
+  100% {
+    transition: translateY(0);
+  }
+}
 
 .inputHolder {
   display: flex;
@@ -33,32 +43,43 @@
     animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
   }
 
+  // TODO: wrap all the segments in words, the words can then be stacked on top of each other
+  // so we don't overflow the page, it'll require the page to render based on words, not spaces
+  // .word {}
+
   .segment {
-    padding: 3px;
-    width: 2em;
+    width: 2.4em;
+    height: 2.4em;
+    margin: 3px;
+
+    &.victoryAnimation { // :nth-child(n)
+      // TODO: delay variable based on child position
+      animation: jump 0.82s cubic-bezier(0.27, 0.78, 0, 1.36) linear;
+    }
 
     input {
       width: 100%;
-      font-size: 1.6em;
+      height: 100%;
+      font-size: 1.4em;
       background: none;
       text-align: center;
       outline: none;
       border: none;
-      border-bottom: 3px solid #0006;
+      background: #dedede;
       text-transform: uppercase;
 
       &:focus {
-        border-bottom: 3px solid #0008;
+        background: #bdbdbd;
       }
 
       &.correct {
-        border-bottom: 3px solid #0c9c0c;
-        color: #0c9c0c;
+        background: #0c9c0c;
+        color: #fff;
       }
 
       &.invalid:not(.correct) {
-        border-bottom: 3px solid #f00;
-        color: #f00;
+        background: #f00;
+        color: #fff;
       }
     }
   }

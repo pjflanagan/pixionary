@@ -39,26 +39,25 @@ export type DrawingSubmission = {
 
 export const didFail = (score?: DailyScore) => {
   if (score) {
-    return score.guessCount === MAX_GUESSES;
+    return score.guessCount > MAX_GUESSES;
   }
   return false;
 }
 
 export const getShareText = (score?: DailyScore) => {
   if (score) {
-    const guessCount = didFail(score) ? 'X' : score.guessCount + 1;
+    const guessCount = didFail(score) ? 'X' : score.guessCount;
     return `Pixionary #12 ${getEmoji(score)} ${formatTime(score.timeSeconds)} - ${guessCount}/3`;
   }
   return 'https://pixionary.flanny.app';
 }
 
 export const getEmoji = (score?: DailyScore): string => {
-  return '-'
-  // const emojiList = `🕹🎮🎰🧩👾🤖💣`.split('');
+  const emojiList = `🕹🎮🎰🧩👾🤖💣`.split('');
 
-  // if (didFail(score)) {
-  //   return getRandomFromArray(`🗑🚫⛔📛❌🏳🤬🦨🧟🎲📉🩹🛏🧯🚮🚷📵🆘🔻💩🤡💢🗯🍼🧂`.split(''));
-  // }
+  if (didFail(score)) {
+    return getRandomFromArray(`🗑🚫⛔📛❌🏳🤬🦨🧟🎲📉🩹🛏🧯🚮🚷📵🆘🔻💩🤡💢🗯🍼🧂`.split(''));
+  }
 
-  // return getRandomFromArray(emojiList);
+  return getRandomFromArray(emojiList);
 }
