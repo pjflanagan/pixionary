@@ -35,9 +35,8 @@ export const useNotification = (duration: number = 3000): [boolean, string, (m: 
         setIsOpen(false);
       }, duration);
     }
-  }, [isOpen]);
+  }, [isOpen, duration]);
 
-  // TODO: this should take message: string, and maybe duration: number
   const sendNotification = (message: string) => {
     setIsOpen(true);
     setMessage(message);
