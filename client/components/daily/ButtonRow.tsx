@@ -2,19 +2,19 @@
 import { FC } from 'react';
 
 import { ButtonElement, ButtonRowElement } from 'elements';
-import { GameMode } from 'models';
+import { DailyGamePhase } from 'models';
 
 type ButtonRowComponentProps = {
   isVisible: boolean;
-  gameMode: GameMode;
-  cycleGameMode: (gameMode: GameMode) => void;
+  gamePhase: DailyGamePhase;
+  cycleGamePhase: (gamePhase: DailyGamePhase) => void;
   handleShare: () => void;
 }
 
 const ButtonRowComponent: FC<ButtonRowComponentProps> = ({
   isVisible,
-  gameMode,
-  cycleGameMode,
+  gamePhase,
+  cycleGamePhase,
   handleShare
 }) => {
 
@@ -22,21 +22,21 @@ const ButtonRowComponent: FC<ButtonRowComponentProps> = ({
     if (isVisible) {
       return null;
     }
-    switch (gameMode) {
-      case GameMode.START:
+    switch (gamePhase) {
+      case DailyGamePhase.START:
         return (
           <ButtonRowElement>
-            <ButtonElement label="Start" onClick={() => cycleGameMode(GameMode.GUESS)} type="primary" />
+            <ButtonElement label="Start" onClick={() => cycleGamePhase(DailyGamePhase.GUESS)} type="primary" />
           </ButtonRowElement>
         );
-      case GameMode.STATS:
+      case DailyGamePhase.STATS:
         return (
           <ButtonRowElement>
             <ButtonElement label="Share" onClick={handleShare} type="secondary" />
-            <ButtonElement label="Continue" onClick={() => cycleGameMode(GameMode.DRAW)} type="primary" />
+            <ButtonElement label="Continue" onClick={() => cycleGamePhase(DailyGamePhase.DRAW)} type="primary" />
           </ButtonRowElement>
         );
-      case GameMode.THANKS:
+      case DailyGamePhase.THANKS:
         return (
           <ButtonRowElement>
             <ButtonElement label="Share" onClick={handleShare} type="secondary" />

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { useEffectOnce } from 'react-use';
 
 import { PromptElement } from 'elements';
-import { DailyScore, GameMode, didFail } from 'models';
+import { DailyScore, DailyGamePhase, didFail } from 'models';
 import { getRandomFromArray } from 'utils';
 
 const START_PROMPTS = [
@@ -34,12 +34,12 @@ const REVEAL_INCORRECT_PROMPT = [
 ];
 
 type PromptComponentProps = {
-  gameMode: GameMode;
+  gamePhase: DailyGamePhase;
   score: DailyScore;
 }
 
 const PromptComponent: FC<PromptComponentProps> = ({
-  gameMode,
+  gamePhase,
   score
 }) => {
 
@@ -56,35 +56,35 @@ const PromptComponent: FC<PromptComponentProps> = ({
   });
 
   useEffect(() => {
-    switch (gameMode) {
-      case GameMode.GUESS: // -------------- 1. GUESS
+    switch (gamePhase) {
+      case DailyGamePhase.GUESS: // -------------- 1. GUESS
         setPrompt({
           text: getRandomFromArray(GUESS_PROMPTS),
           color: undefined
         });
         break;
-      case GameMode.REVEAL: // -------------- 2. REVEAL
+      case DailyGamePhase.REVEAL: // -------------- 2. REVEAL
         setPrompt({
           text: didFail(score) ? getRandomFromArray(REVEAL_INCORRECT_PROMPT) : getRandomFromArray(REVEAL_CORRECT_PROMPT),
           color: didFail(score) ? 'red' : 'green',
         });
         break;
-      case GameMode.STATS: // -------------- 3. STATS
+      case DailyGamePhase.STATS: // -------------- 3. STATS
         break;
-      case GameMode.DRAW: // -------------- 4. DRAW
+      case DailyGamePhase.DRAW: // -------------- 4. DRAW
         setPrompt({
           text: getRandomFromArray(DRAW_PROMPTS),
           color: undefined
         });
         break;
-      case GameMode.THANKS: // -------------- 5. THANKS
+      case DailyGamePhase.THANKS: // -------------- 5. THANKS
         setPrompt({
           text: `Thanks for playing! See you tomorrow!`,
           color: undefined
         });
         break;
     }
-  }, [gameMode, score])
+  }, [gamePhase, score])
 
 
   return (

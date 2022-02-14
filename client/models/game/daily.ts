@@ -9,13 +9,30 @@ export const MAX_GUESSES = 3;
 
 // Types -----------------------------------
 
-export enum GameMode {
+export enum DailyGamePhase {
   START,
   GUESS,
   REVEAL,
   STATS,
   DRAW,
   THANKS
+}
+
+export type DailyGameState = {
+  day: string;
+  phase: DailyGamePhase;
+  score: null | DailyScore;
+  puzzle: null | Puzzle;
+  submission: null | DrawingSubmission;
+}
+
+export const INIT_DAILY_GAME_STATE = {
+  day: '',
+  phase: DailyGamePhase.START,
+  score: null,
+  puzzle: null,
+  submission: null,
+
 }
 
 // Puzzle
@@ -28,6 +45,7 @@ export type Puzzle = {
 export type DailyScore = {
   guessCount: number;
   timeSeconds: number;
+  // guess: string; // TODO: store the guess because we want to fill it in when they've already guessed
 }
 
 // Drawing

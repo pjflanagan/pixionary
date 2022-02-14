@@ -1,7 +1,7 @@
 
 import { FC, useState } from 'react';
 
-import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel, GameMode } from 'models'
+import { DrawingTitle, PALLET_INITIAL_COLOR, Pixel, DailyGamePhase } from 'models'
 import { ButtonElement, ButtonRowElement, PalletElement, CanvasDrawElement } from 'elements';
 
 const PROMPT: DrawingTitle = {
@@ -10,11 +10,11 @@ const PROMPT: DrawingTitle = {
 }
 
 type DrawComponentProps = {
-  cycleGameMode: (gameMode: GameMode) => void;
+  cycleGamePhase: (gamePhase: DailyGamePhase) => void;
 }
 
 const DrawComponent: FC<DrawComponentProps> = ({
-  cycleGameMode
+  cycleGamePhase
 }) => {
 
   // Draw
@@ -23,11 +23,11 @@ const DrawComponent: FC<DrawComponentProps> = ({
   const [color, setColor] = useState(PALLET_INITIAL_COLOR);
 
   const handleSubmitDrawing = () => {
-    cycleGameMode(GameMode.THANKS);
+    cycleGamePhase(DailyGamePhase.THANKS);
   }
 
   const handleSkip = () => {
-    cycleGameMode(GameMode.THANKS);
+    cycleGamePhase(DailyGamePhase.THANKS);
   }
 
   const drawingTitle = drawPrompt;

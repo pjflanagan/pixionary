@@ -32,7 +32,7 @@ const PopupElement: FC<PopupElementProps> = ({
   return (
     <div className={className}>
       <div className={Style.popupModal} ref={ref}>
-        <div className={Style.title}>{title}</div>
+        <div suppressHydrationWarning className={Style.title}>{title}</div>
         <div className={Style.content}>{children}</div>
         <ButtonRowElement>
           <ButtonElement key="close" onClick={onClose} label="Close" />

@@ -2,13 +2,13 @@
 import { FC } from 'react';
 
 import { ButtonElementProps, PopupElement } from 'elements';
-import { DailyScore, didFail, GameMode } from 'models';
+import { DailyScore, didFail, DailyGamePhase } from 'models';
 import { formatTime } from 'utils';
 
 type PopupComponentProps = {
   popupState: 'none' | 'info' | 'stats' | 'settings'
-  gameMode: GameMode,
-  cycleGameMode: (gameMode: GameMode) => void;
+  gamePhase: DailyGamePhase,
+  cycleGamePhase: (gamePhase: DailyGamePhase) => void;
   score: DailyScore;
   onShare: () => void;
   onClose: () => void;
@@ -16,8 +16,8 @@ type PopupComponentProps = {
 
 const PopupComponent: FC<PopupComponentProps> = ({
   popupState,
-  gameMode,
-  cycleGameMode,
+  gamePhase,
+  cycleGamePhase,
   score,
   onShare,
   onClose,
@@ -28,12 +28,12 @@ const PopupComponent: FC<PopupComponentProps> = ({
   let popupContent = <></>;
 
   const makeInfoPopup = () => {
-    switch (gameMode) {
-      case GameMode.START:
+    switch (gamePhase) {
+      case DailyGamePhase.START:
         popupTitle = 'Welcome';
         popupActions.push({
           label: 'Start',
-          onClick: () => cycleGameMode(GameMode.GUESS),
+          onClick: () => cycleGamePhase(DailyGamePhase.GUESS),
           type: 'primary',
         });
         popupContent = <>
@@ -42,15 +42,15 @@ const PopupComponent: FC<PopupComponentProps> = ({
           <p>Are you ready?</p>
         </>;
         break;
-      case GameMode.GUESS:
+      case DailyGamePhase.GUESS:
         popupTitle = 'Guess';
         popupContent = <>
           <p>{`It's time to start guessing!`}</p>
         </>;
         break;
-      case GameMode.REVEAL:
+      case DailyGamePhase.REVEAL:
         // fallthrough to Stats, the user probably won't click this in time but if they do
-      case GameMode.STATS:
+      case DailyGamePhase.STATS:
         popupTitle = didFail(score) ? 'Oops...' : 'Nice Job!';
         popupActions.push(
           {
@@ -60,7 +60,7 @@ const PopupComponent: FC<PopupComponentProps> = ({
           },
           {
             label: 'Continue',
-            onClick: () => cycleGameMode(GameMode.DRAW),
+            onClick: () => cycleGamePhase(DailyGamePhase.DRAW),
             type: 'primary',
           }
         );
@@ -75,13 +75,13 @@ const PopupComponent: FC<PopupComponentProps> = ({
           <p>Are you ready?</p>
         </>;
         break;
-      case GameMode.DRAW:
+      case DailyGamePhase.DRAW:
         popupTitle = 'Draw';
         popupContent = <>
           <p>{`It's time to start drawing!`}</p>
         </>;
         break;
-      case GameMode.THANKS:
+      case DailyGamePhase.THANKS:
         popupTitle = 'Thanks';
         popupActions.push({
           label: 'Share',

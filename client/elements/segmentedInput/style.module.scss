@@ -52,9 +52,15 @@
     height: 2.4em;
     margin: 3px;
 
-    &.victoryAnimation { // :nth-child(n)
-      // TODO: delay variable based on child position
-      animation: jump 0.82s cubic-bezier(0.27, 0.78, 0, 1.36) linear;
+    &.victoryAnimation {
+      animation: jump 0.82s cubic-bezier(0.27, 0.78, 0, 1.36) 1;
+
+      $elements: 30;
+      @for $i from 0 to $elements {
+        &:nth-child(#{$i + 1}) {
+          animation-delay: calc($i * 0.06s);
+        }
+      }
     }
 
     input {

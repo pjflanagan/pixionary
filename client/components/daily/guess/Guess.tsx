@@ -2,7 +2,7 @@
 import { FC, useState } from 'react';
 
 import { CanvasWatchElement } from 'elements';
-import { Puzzle, DailyScore, GameMode } from 'models';
+import { Puzzle, DailyScore, DailyGamePhase } from 'models';
 
 import { GuessInput } from './guessInput';
 
@@ -15,12 +15,12 @@ const PUZZLE: Puzzle = {
 }
 
 type GuessComponentProps = {
-  gameMode: GameMode;
+  gamePhase: DailyGamePhase;
   onSubmit: (newScore: DailyScore) => void;
 }
 
 const GuessComponent: FC<GuessComponentProps> = ({
-  gameMode,
+  gamePhase,
   onSubmit
 }) => {
   // TODO: onload get the puzzle from backend and set it
@@ -28,20 +28,20 @@ const GuessComponent: FC<GuessComponentProps> = ({
   const [puzzle, setPuzzle] = useState(PUZZLE);
 
   const titleVisible = (() => {
-    switch (gameMode) {
-      case GameMode.REVEAL:
-      case GameMode.STATS:
-      case GameMode.THANKS:
+    switch (gamePhase) {
+      case DailyGamePhase.REVEAL:
+      case DailyGamePhase.STATS:
+      case DailyGamePhase.THANKS:
         return true;
     }
     return false;
   })();
 
   const inputVisible = (() => {
-    switch (gameMode) {
-      case GameMode.GUESS:
-      case GameMode.REVEAL:
-      case GameMode.STATS:
+    switch (gamePhase) {
+      case DailyGamePhase.GUESS:
+      case DailyGamePhase.REVEAL:
+      case DailyGamePhase.STATS:
         return true;
     }
     return false;
@@ -51,7 +51,7 @@ const GuessComponent: FC<GuessComponentProps> = ({
     <>
       <CanvasWatchElement
         pixels={puzzle.pixels}
-        isPlaying={gameMode !== GameMode.START}
+        isPlaying={gamePhase !== DailyGamePhase.START}
         titleVisible={titleVisible}
         title={puzzle.answer}
       />

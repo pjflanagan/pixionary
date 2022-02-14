@@ -1,9 +1,9 @@
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useCopyToClipboard, useEffectOnce, useLocalStorage } from 'react-use';
 
 import { ContainerElement, HeaderElement, NotificationElement, useNotification } from 'elements';
-import { DailyScore, GameMode, getPuzzleDay, getShareText } from 'models';
+import { DailyGamePhase, DailyGameState, DailyScore, getPuzzleDay, getShareText, INIT_DAILY_GAME_STATE } from 'models';
 
 import { ButtonRowComponent } from './ButtonRow';
 import { PromptComponent } from './Prompt';
@@ -14,64 +14,72 @@ import { PopupComponent } from './popup';
 const DailyComponent: FC = () => {
 
   // Data and State
-  // TODO: store game state in the storage with the loaded drawings
-  // determine if it is a new day and we need to update the game state
-  // TODO: also do I need a GameMode.LOADING?
-  const [puzzleDay, setPuzzleDay] = useLocalStorage('pix-daily--puzzleDay');
-  const [gameMode, setGameMode] = useLocalStorage<GameMode>('pix-daily--gameMode', GameMode.START);
-  const [score, setScore, _removeScore] = useLocalStorage<DailyScore>('pix-daily--score', null);
+  // TODO: also do I need a DailyGamePhase.LOADING?
+  const [gameState, setGameState, _removeGameState] = useLocalStorage<DailyGameState>('pix--dailyGameState', INIT_DAILY_GAME_STATE);
+
+  const setScore = (newScore: DailyScore) => {
+    setGameState({ ...gameState, score: newScore });
+  }
 
   // UI
   const [isOpen, message, sendNotification] = useNotification();
-  const [popupState, setPopupState] = useState<'info' | 'settings' | 'stats' | 'none' >('info');
+  const [popupState, setPopupState] = useState<'info' | 'settings' | 'stats' | 'none'>('info');
 
   // Actions
   const [_state, copyToClipboard] = useCopyToClipboard();
 
-  // 
   useEffectOnce(() => {
     // if it's a new day, then reset
     const newPuzzleDay = getPuzzleDay();
-    // if (puzzleDay !== newPuzzleDay) {
-    //   setPuzzleDay(newPuzzleDay);
-    //   setGameMode(GameMode.START);
-    //   setScore(null);
-    // }
+    if (gameState.day !== newPuzzleDay) {
+      setGameState({
+        day: newPuzzleDay,
+        phase: DailyGamePhase.START,
+        score: null,
+        puzzle: null,
+        submission: null
+      });
+    } else {
+      // otherwise rerun any side effects of changing the game phase
+      cycleGamePhase(gameState.phase);
+    }
   });
+
+  const cycleGamePhase = useCallback(
+    (nextDailyGamePhase: DailyGamePhase) => {
+      switch (nextDailyGamePhase) {
+        case DailyGamePhase.GUESS: // -------------- 1. GUESS
+          setPopupState('none');
+          break;
+        case DailyGamePhase.REVEAL: // ------------- 2. REVEAL
+          setTimeout(() => {
+            setPopupState('info');
+            setGameState({ ...gameState, phase: DailyGamePhase.STATS });
+          }, 2600);
+          break;
+        case DailyGamePhase.STATS: // -------------- 3. STATS
+          break;
+        case DailyGamePhase.DRAW: // --------------- 4. DRAW
+          setPopupState('none');
+          break;
+        case DailyGamePhase.THANKS: // ------------- 5. THANKS
+          setPopupState('info');
+          break;
+      }
+      setGameState({ ...gameState, phase: nextDailyGamePhase });
+    }, [gameState, setGameState]
+  );
 
   // after the score changes, cycle the game mode
   useEffect(() => {
-    if (score !== null) {
-      cycleGameMode(GameMode.REVEAL);
+    if (gameState.score !== null && gameState.phase === DailyGamePhase.GUESS) {
+      cycleGamePhase(DailyGamePhase.REVEAL);
     }
-  }, [score]);
-
-  const cycleGameMode = (nextGameMode: GameMode) => {
-    switch (nextGameMode) {
-      case GameMode.GUESS: // -------------- 1. GUESS
-      setPopupState('none');
-        break;
-      case GameMode.REVEAL: // ------------- 2. REVEAL
-        setTimeout(() => {
-          setPopupState('info');
-          setGameMode(GameMode.STATS);
-        }, 2600);
-        break;
-      case GameMode.STATS: // -------------- 3. STATS
-        break;
-      case GameMode.DRAW: // --------------- 4. DRAW
-        setPopupState('none');
-        break;
-      case GameMode.THANKS: // ------------- 5. THANKS
-        setPopupState('info');
-        break;
-    }
-    setGameMode(nextGameMode);
-  }
+  }, [gameState, cycleGamePhase]);
 
 
   const handleShare = () => {
-    copyToClipboard(getShareText(score));
+    copyToClipboard(getShareText(gameState.score));
     sendNotification('Copied score to clipboard');
   }
 
@@ -79,10 +87,10 @@ const DailyComponent: FC = () => {
     <>
       <PopupComponent
         popupState={popupState}
-        gameMode={gameMode}
+        gamePhase={gameState.phase}
         onClose={() => setPopupState('none')}
-        cycleGameMode={cycleGameMode}
-        score={score}
+        cycleGamePhase={cycleGamePhase}
+        score={gameState.score}
         onShare={handleShare}
       />
       <NotificationElement isOpen={isOpen} text={message} />
@@ -92,22 +100,22 @@ const DailyComponent: FC = () => {
           { icon: 'stats', onClick: () => setPopupState('stats') },
           { icon: 'settings', onClick: () => setPopupState('settings') },
         ]} />
-        <PromptComponent gameMode={gameMode} score={score} />
+        <PromptComponent gamePhase={gameState.phase} score={gameState.score} />
         {
-          gameMode === GameMode.DRAW && <DrawComponent cycleGameMode={cycleGameMode} />
+          gameState.phase === DailyGamePhase.DRAW && <DrawComponent cycleGamePhase={cycleGamePhase} />
         }
         {
-          gameMode !== GameMode.DRAW && <GuessComponent
-            gameMode={gameMode}
+          gameState.phase !== DailyGamePhase.DRAW && <GuessComponent
+            gamePhase={gameState.phase}
             onSubmit={setScore}
           />
         }
         {
           <ButtonRowComponent
             isVisible={popupState !== 'none'}
-            gameMode={gameMode}
+            gamePhase={gameState.phase}
             handleShare={handleShare}
-            cycleGameMode={cycleGameMode}
+            cycleGamePhase={cycleGamePhase}
           />
         }
       </ContainerElement>
